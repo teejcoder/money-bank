@@ -1,18 +1,18 @@
-import GoogleAuth from './components/GoogleAuth';
-import { supabase } from './supabaseClient';
+// import GoogleAuth from './components/GoogleAuth';
+import Header from './components/Header';
+import Hero from './components/Hero';
+import Welcome from './components/Welcome';
 
 const App = () => {
 
-return (
-  <div className='flex justify-center items-center h-screen bg-slate-800 text-white font-montserrat'>
-    <p className='text-3xl'>
-      hi there, this is <b>Money Bank</b> welcome to your financial future!
-    </p>
-
-    <GoogleAuth />
-  </div>
-)
-
+  return (
+    <div className='font-montserrat'>
+      <Header />
+      <Hero />
+      <Welcome />
+      {/* <GoogleAuth /> */}
+    </div>
+  );
 }
 
 export default App
