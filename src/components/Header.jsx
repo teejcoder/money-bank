@@ -2,7 +2,7 @@ import React from 'react'
 
 const Header = () => {
   return (
-    <div className='h-20 border-b flex justify-between items-center p-10'>
+    <div className='h-20 w-full bg-white border-b top-0 fixed flex justify-between items-center p-10'>
 
       <p className='text-6xl font-bold'>
         Money Bank

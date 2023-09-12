@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { supabase } from '../supabaseClient';
 import Button from './Button';
 import Header from './Header';
@@ -9,12 +11,16 @@ const Login = () => {
   const [error, setError] = useState(null);
   const [status, setStatus] = useState('typing');
 
+  const navigate = useNavigate();
+
+
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -31,6 +37,7 @@ const Login = () => {
       // Assuming the login was successful:
       setStatus('success');
       setError(null);
+      navigate('/profile');
     } catch (err) {
       setStatus('typing');
       setError(err.message || 'An error occurred during login');
