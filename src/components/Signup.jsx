@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 
 import { supabase } from '../supabaseClient';
+import Header from './Header';
+import { useNavigate } from "react-router-dom";
+import Button from './Button';
+
+
 
 const Signup = () => {
   const [answer, setAnswer] = useState('');
   const [error, setError] = useState(null);
   const [status, setStatus] = useState('typing');
+  const navigate = useNavigate(); 
 
   const handleInputChange = (event) => {
     setAnswer(event.target.value);
@@ -13,6 +19,7 @@ const Signup = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
 
     try {
       setStatus('submitting');
@@ -30,6 +37,7 @@ const Signup = () => {
       // Assuming the signup was successful:
       setStatus('success');
 
+      navigate('/profile');
     } catch (err) {
       setStatus('typing');
       setError(err.message || 'An error occurred during signup');
@@ -37,37 +45,46 @@ const Signup = () => {
   };
 
   return (
-    <div>
-      <h2>Signup</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input
-            className='text-black'
-            type="email"
-            value={answer}
-            onChange={handleInputChange}
-            disabled={status === 'submitting' || status === 'success'}
-            required
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            disabled={status === 'submitting' || status === 'success'}
-            required
-          />
-        </div>
-        <div>
-          <button type="submit" disabled={status === 'submitting'}>
-            {status === 'submitting' ? 'Submitting...' : 'Sign Up'}
-          </button>
-        </div>
-        {error && <p className="error">{error}</p>}
-      </form>
-      {status === 'success' && <p className="success">Signup successful!</p>}
+    <>
+    <Header />
+
+    <div className='flex justify-between flex-col items-center py-20 border-b'>
+      
+      <h2 className='text-7xl'>Signup</h2>
+      <div>
+        <form onSubmit={handleSubmit} className='flex justify-center items-center flex-col'>
+            <input
+              className='h-10 border-b m-5 w-60'
+              placeholder='Type your email here..'
+              type="email"
+              value={answer}
+              onChange={handleInputChange}
+              disabled={status === 'submitting' || status === 'success'}
+              required
+            />
+
+            <input
+              className='h-10 border-b mb-10 m-5 w-60'
+              placeholder='Type your password here..'
+              type="password"
+              disabled={status === 'submitting' || status === 'success'}
+              required
+            />
+
+
+            <Button type="submit" disabled={status === 'submitting'}>
+              {status === 'submitting' ? 'Submitting...' : 'Sign Up'} 
+            </Button>
+
+          {error && <p className="error">{error}</p>}
+
+          {status === 'success' && <p className="success text-5xl text-green-500">Signup successful!</p>}
+        </form>
+
+      </div>
+
     </div>
+    </>
   );
 }
 

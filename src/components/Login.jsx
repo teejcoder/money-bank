@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { supabase } from '../supabaseClient';
+import Button from './Button';
+import Header from './Header';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -22,7 +24,7 @@ const Login = () => {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
-      });
+      })
       if (error) {
         throw new Error(error.message);
       }
@@ -37,46 +39,48 @@ const Login = () => {
 
 
   return (
-      <div className='h-96'>
-        <div className='border'>
-        <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Email:</label>
+    <>
+    <Header />
+    <div className='flex justify-between flex-col items-center py-20 border-b'>
+
+        <h2 className='text-7xl'>Login</h2>
+        <div>
+        <form onSubmit={handleSubmit} className='flex justify-center items-center flex-col'>
             <input
-              className='text-black'
+              className='h-10 border-b m-5 w-60'
+              placeholder='Type your email here..'
               type="email"
               value={email}
               onChange={handleEmailChange}
               disabled={status === 'submitting' || status === 'success'}
               required
             />
-          </div>
-          <div>
-            <label>Password:</label>
+
             <input
+              className='h-10 border-b mb-10 m-5 w-60'
+              placeholder='Type your password here..'
               type="password"
               value={password}
               onChange={handlePasswordChange}
               disabled={status === 'submitting' || status === 'success'}
               required
             />
-          </div>
-          <div
-              id="search-spinner"
-              aria-hidden
-              hidden={true}
-            />
-          <div>
-            <button type="submit" disabled={status === 'submitting'}>
+
+            <Button type="submit" disabled={status === 'submitting'}>
               {status === 'submitting' ? 'Logging in...' : 'Log In'}
-            </button>
-          </div>
+            </Button>
+
           {error && <p className="error">{error}</p>}
+
+          {status === 'success' && <p className="success text-5xl text-green-500">Login successful!</p>}
         </form>
-        {status === 'success' && <p className="success">Login successful!</p>}
         </div>
-      </div>
+
+        </div>
+
+    </>
+
+
   );
 };
 
