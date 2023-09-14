@@ -17,33 +17,20 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    try {
-      setStatus('submitting');
-      console.log("Email:", email);
-      console.log("Password:", password);
-
-      let { data, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password,
-      });
-
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      // Assuming the login was successful:
-      setStatus('success');
-      setError(null);
-      navigate('/profile');
-
-    } catch (err) {
-
-      console.error(err); // Log the error
-      setStatus('typing');
-      setError(err.message || 'An error occurred during login');
-    }
+  
+    setStatus('submitting');
+  
+    let { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+  
+    // Assuming the login was successful:
+    setStatus('success');
+    setError(null);
+    navigate('/profile');
   };
+  
 
 
   return (

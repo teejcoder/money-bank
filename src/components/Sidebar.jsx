@@ -2,6 +2,8 @@ import React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { supabase } from '../supabaseClient';
+
 import { LuLogOut } from 'react-icons/lu';
 
 function Sidebar() {
@@ -9,8 +11,10 @@ function Sidebar() {
   const navigate = useNavigate();
 
   
-  const handleLogout = () => {
-    setLogoutStatus(true)
+  const handleLogout = async () => {
+
+    const { error } = await supabase.auth.signOut()
+
     navigate('/')
   };
 

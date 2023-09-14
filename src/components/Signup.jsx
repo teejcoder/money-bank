@@ -21,7 +21,6 @@ const Signup = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-
     try {
       setStatus('submitting');
 
