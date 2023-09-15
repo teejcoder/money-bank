@@ -21,7 +21,6 @@ const Signup = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    try {
       setStatus('submitting');
 
       // Use Supabase to sign up the user
@@ -32,17 +31,11 @@ const Signup = () => {
 
       if (error) {
         throw new Error(error.message);
+      } else {
+        setStatus('success');
+        navigate('/profile');
       }
-
-      // Assuming the signup was successful:
-      setStatus('success');
-
-      navigate('/profile');
-    } catch (err) {
-      setStatus('typing');
-      setError(err.message || 'An error occurred during signup');
     }
-  };
 
   return (
     <>

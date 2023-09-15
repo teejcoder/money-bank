@@ -13,13 +13,17 @@ function Sidebar() {
   
   const handleLogout = async () => {
 
+    setLogoutStatus(true)
     const { error } = await supabase.auth.signOut()
+
+
     if (error) {
       console.error('error logging out user', error)
     } else {
       navigate('/')
     }
   };
+
 
   return (
     <aside className="h-full w-24 pt-20 left-0 flex flex-col justify-between border-r">
