@@ -14,8 +14,11 @@ function Sidebar() {
   const handleLogout = async () => {
 
     const { error } = await supabase.auth.signOut()
-
-    navigate('/')
+    if (error) {
+      console.error('error logging out user', error)
+    } else {
+      navigate('/')
+    }
   };
 
   return (
