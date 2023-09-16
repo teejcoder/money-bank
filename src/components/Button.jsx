@@ -14,13 +14,10 @@ const Button = ({url, children, backgroundColor}) => {
     };
 
   return (
-    <Link to={url}>
-        <button style={buttonStyle} className='w-48 h-12 border m-5'>
-            {children}
-        </button>
-    </Link>
-
+    <button style={buttonStyle} className='w-48 h-12 border m-5'>
+      {children}
+    </button>
   )
-}
+};
 
 export default Button;
