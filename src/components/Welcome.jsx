@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from './Button';
+import Login from './Login';
 
 const Welcome = () => {
   return (

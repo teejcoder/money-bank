@@ -9,21 +9,22 @@ import Button from './Button';
 
 
 const Signup = () => {
-  const [answer, setAnswer] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
   const [error, setError] = useState(null);
   const [status, setStatus] = useState('typing');
-  const navigate = useNavigate(); 
 
-  const handleInputChange = (event) => {
-    setAnswer(event.target.value);
-  };
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     // Use Supabase to sign up the user
     const { user, error } = await supabase.auth.signUp({
-      email: answer,
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
       password: 'password', // Replace with the user's password input
     });
 
@@ -42,12 +43,30 @@ const Signup = () => {
         <h2 className='text-7xl'>Signup</h2>
         <div>
           <form onSubmit={handleSubmit} className='flex justify-center items-center flex-col'>
+          <input
+              className='h-10 border-b m-5 w-60'
+              placeholder='Type your First Name here..'
+              type="text"
+              value={firstName}
+              onChange={(e) => e.setfirstName()}
+              disabled={status === 'submitting' || status === 'success'}
+              required
+            />
+            <input
+              className='h-10 border-b m-5 w-60'
+              placeholder='Type your Last Name here..'
+              type="text"
+              value={lastName}
+              onChange={(e) => e.setLastName()}
+              disabled={status === 'submitting' || status === 'success'}
+              required
+            />            
             <input
               className='h-10 border-b m-5 w-60'
               placeholder='Type your email here..'
               type="email"
-              value={answer}
-              onChange={() => setEmail()}
+              value={email}
+              onChange={(e) => e.setEmail()}
               disabled={status === 'submitting' || status === 'success'}
               required
             />
