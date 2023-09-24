@@ -1,13 +1,19 @@
 import React from 'react';
 import Button from './Button';
 import Login from './Login';
+import { Link } from 'react-router-dom';
 
 const Welcome = () => {
   return (
     <div className='flex items-center justify-center'>
       <div className=''>
-        <Button url='/login' backgroundColor={'blue'}>LOGIN</Button>
-        <Button url='/signup' backgroundColor={'green'}>SIGNUP</Button>
+        <Link to='/login'>
+        <Button backgroundColor={'blue'}>LOGIN</Button>
+        </Link>
+        <Link to='/signup'>
+        <Button backgroundColor={'green'}>SIGNUP</Button>
+        </Link>
+
       </div>
     </div>
   );

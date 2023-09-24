@@ -1,7 +1,6 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
 
-const Button = ({url, children, backgroundColor}) => {
+const Button = ({children, backgroundColor}) => {
 
   const buttonStyle = {
     backgroundColor: backgroundColor || 'black', 
