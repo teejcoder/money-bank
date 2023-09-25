@@ -16,13 +16,10 @@ const Login = () => {
       <Header />
       <div className='flex justify-between flex-col items-center py-20 border-b'>
       <Auth
+        redirectTo='http://localhost:3000/profile'
         supabaseClient={supabase}
         appearance={{ theme: ThemeSupa }}
         providers={['google']}
-
-        options={
-          redirectTo='http://localhost:3000/profile'
-        }
       />
       </div>
     </div>
