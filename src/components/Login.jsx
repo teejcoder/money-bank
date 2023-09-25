@@ -19,7 +19,10 @@ const Login = () => {
         supabaseClient={supabase}
         appearance={{ theme: ThemeSupa }}
         providers={['google']}
-        redirectTo={`http://localhost:3000/profile`}
+
+        options={
+          redirectTo='http://localhost:3000/profile'
+        }
       />
       </div>
     </div>

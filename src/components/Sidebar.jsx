@@ -13,15 +13,14 @@ function Sidebar() {
   
   const handleLogout = async () => {
 
-    setLogoutStatus(true)
     const { error } = await supabase.auth.signOut()
-
-
     if (error) {
       console.error('error logging out user', error)
-    } else {
+    } else 
+    setTimeout(() => {
       navigate('/')
-    }
+      setLogoutStatus(true)
+    });
   };
 
 
@@ -66,7 +65,7 @@ function Sidebar() {
           stroke="currentColor"
           className="h-6 w-6 mx-auto"
         >
-          <LuLogOut size='26px' color='red' />
+          <LuLogOut size='26px' color='#000' />
         </svg>
       </button>
     </aside>

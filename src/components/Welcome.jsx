@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from './Button';
-import Login from './Login';
 import { Link } from 'react-router-dom';
 
 const Welcome = () => {
