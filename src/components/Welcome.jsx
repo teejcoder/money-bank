@@ -10,10 +10,6 @@ const Welcome = () => {
         <Link to='/login'>
         <Button backgroundColor={'blue'}>LOGIN</Button>
         </Link>
-        <Link to='/signup'>
-        <Button backgroundColor={'green'}>SIGNUP</Button>
-        </Link>
-
       </div>
     </div>
   );
