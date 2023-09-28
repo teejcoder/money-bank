@@ -10,7 +10,6 @@ const App = () => {
       <Header />
       <Hero />
       <Welcome />
-      {/* <GoogleAuth /> */}
     </div>
   );
 }
