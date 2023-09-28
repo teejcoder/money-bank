@@ -1,79 +1,41 @@
-import React from 'react'
+import React, { useEffect } from 'react';
+import axios from 'axios';
 
-const useFetch = () => {
-  var axios = require('axios');
-  var qs = require('qs');
-  var data = qs.stringify({
-    'scope': 'SERVER_ACCESS' 
-  })
+const UseFetch = () => {
 
-  var config = {
-    method: 'post',
-    url: 'https://au-api.basiq.io/token',
-    headers: { 
-      'Authorization': `Basic ${MzA4NDMyZTAtNjgzOS00ZGU0LWJkZDEtOWVhMzc2ZWUyZDJhOmZmYzk3NWNlLWE4YjgtNDc0NS04MTk0LWUzY2M1NGJjNDJlMw==}`, 
-      'Content-Type': 'application/x-www-form-urlencoded', 
-      'basiq-version': '3.0'
-    },
-    data : data
-  };
 
-  const response = await axios.request(options);
-  authToken = 'Bearer ' + response.data.access_token;
-  axios(config)
-    .then((response) => {
-    console.log(response.data)
-  })
-    .catch((error) => {
-    console.log(error)
-  })
+    useEffect(() => {
+        const displayData = async () => {
+            const encodedParams = new URLSearchParams();
+                encodedParams.set('scope', 'CLIENT_ACCESS');
 
-  var data = JSON.stringify({
-    "email": "max@hooli.com",
-    "mobile": "+61412460636"
-  });
+            const options = {
+                method: 'POST',
+                url: 'https://au-api.basiq.io/token',
+                headers: {
+                accept: 'application/json',
+                'basiq-version': '3.0',
+                'content-type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Basic MzA4NDMyZTAtNjgzOS00ZGU0LWJkZDEtOWVhMzc2ZWUyZDJhOmQ4OTE0MjZhLWMzMmYtNDc1Ni04OTIyLWQyNjM2ZmEzODZjNw==' 
+                }
+            };
+          axios
+            .request(options)
+            .then(function (response) {
+              console.log(response.data);
+            })
+            .catch(function (error) {
+              console.error(error);
+            });   
+        }; displayData()
+    }, []);
 
-  var config = {
-    method: 'post',
-    url: 'https://au-api.basiq.io/users',
-    headers: { 
-      'Authorization': authToken, 
-      'Accept': 'application/json', 
-      'Content-Type': 'application/json'
-    },
-    data: data
-  };
-
-  axios(config)
-  .then(function (response) {
-    console.log(response.data);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-
-  window.location = `https://consent.basiq.io/home?token=${token}`;
-
-  var config = {
-    method: 'get',
-    url: 'https://au-api.basiq.io/users/{user.id}/accounts',
-    headers: { 
-      'Authorization': authToken, 
-      'Accept': 'application/json'
-    }
-  };
-
-  axios(config)
-  .then(function (response) {
-    console.log(response.data);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
 
   return (
-    <div>useFetch</div>
+    <div>
+        trying to get API data..
+    </div>
   )
 }
 
-export default useFetch
+export default UseFetch

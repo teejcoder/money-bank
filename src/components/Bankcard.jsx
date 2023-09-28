@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
+import UseFetch from '../hook/UseFetch';
 
 const Bankcard = () => {
 
   return (
-    <div>Bankcard</div>
+    <UseFetch />
   );
 }
 
