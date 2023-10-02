@@ -21,7 +21,7 @@ function Profile() {
         setUserDisplayName('')
       }
       if (error){
-        console.log(error)
+        console.log(error.response.data)
       }
     }; displayUserName()
   }, [userDisplayName]);
