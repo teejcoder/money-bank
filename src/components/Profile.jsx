@@ -6,7 +6,6 @@ import Bankcard from "./Bankcard";
 import { supabase } from "../supabaseClient";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { SignIn } from "@supabase/auth-ui-react";
 
 function Profile() {
   const [userDisplayName, setUserDisplayName] = useState('')
@@ -33,13 +32,7 @@ function Profile() {
 
       <div className="flex h-5/6">
         <Sidebar />
-
-        <div className="p-20">
-          <div>
-            <p>{userDisplayName ? `Hi, ${userDisplayName}!`: <Link to={'/login'}>Click Here to Sign In</Link>}</p>
-          </div>
           <Bankcard />
-        </div>
       </div>
 
       <Footer/>

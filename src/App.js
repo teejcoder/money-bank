@@ -1,4 +1,3 @@
-// import GoogleAuth from './components/GoogleAuth';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Welcome from './components/Welcome';
