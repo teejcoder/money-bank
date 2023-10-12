@@ -4,15 +4,14 @@ import { useNavigate } from 'react-router-dom';
 
 import { supabase } from '../supabaseClient';
 
-import { LuLogOut } from 'react-icons/lu';
+import { LuLogOut, LuUser2 } from 'react-icons/lu';
+
 
 function Sidebar() {
   const [logoutStatus, setLogoutStatus] = useState(false);
   const navigate = useNavigate();
 
-  
   const handleLogout = async () => {
-
     const { error } = await supabase.auth.signOut()
     if (error) {
       console.error('error logging out user', error)
@@ -22,7 +21,6 @@ function Sidebar() {
       setLogoutStatus(true)
     });
   };
-
 
   return (
     <aside className="h-full w-24 left-0 flex flex-col justify-between border-r">
@@ -39,7 +37,7 @@ function Sidebar() {
             stroke="currentColor"
             className="h-6 w-6 mx-auto"
           >
-            {/* Add your first icon here */}
+            <LuUser2 size='26px' color='#000'/>
           </svg>
         </button>
         {/* Icon 2 */}
