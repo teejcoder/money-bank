@@ -1,32 +1,35 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
 
+ 
 const Bankcard = () => {
+  const api_key = process.env.REACT_APP_BASIQ_API_KEY;
+
   useEffect(() => {
 
     const displayData = async () => {
-      const encodedParams = new URLSearchParams();
-      encodedParams.set('scope', 'SERVER_ACCESS');
+      const data = new URLSearchParams();
+      data.set('scope', 'SERVER_ACCESS');
         
-      const options = {
-        method: 'POST',
+
+      var config = {
+        method: 'post',
         url: 'https://au-api.basiq.io/token',
-        headers: {
-          accept: 'application/json',
-          'basiq-version': '3.0',
-          'content-type': 'application/x-www-form-urlencoded',
-          Authorization: `Basic NjExYTVhOGEtNThhZi00ZDhkLWFhM2QtYjBmMzk4ODZmMjE2OjM5ZWQzMzEyLWVhYzQtNDJkMy1hY2IxLWMyNzlmYTJkZjA5MQ==`
+        headers: { 
+          'Authorization': `Basic ${api_key}`, 
+          'Content-Type': 'application/x-www-form-urlencoded', 
+          'basiq-version': '3.0'
         },
-        data: encodedParams,
+        data : data
       };
-      axios
-        .request(options)
-        .then(function (response) {
-          console.log(response.data);
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
+      
+      axios(config)
+        .then((response) => {
+        console.log(response.data)
+      })
+        .catch((error) => {
+        console.log(error)
+      })
     };
   
     displayData();
