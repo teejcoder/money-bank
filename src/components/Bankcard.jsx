@@ -6,33 +6,22 @@ const Bankcard = () => {
   const api_key = process.env.REACT_APP_BASIQ_API_KEY;
   
   useEffect(() => {
-
-    const displayData = async () => {
-      const data = new URLSearchParams();
-      data.set('scope', 'SERVER_ACCESS');
-        
-
-      var config = {
-        method: 'post',
-        url: 'https://au-api.basiq.io/token',
-        headers: { 
-          'Authorization': `Basic ${api_key}`, 
-          'Content-Type': 'application/x-www-form-urlencoded', 
-          'basiq-version': '3.0'
-        },
-        data : data
-      };
-      
-      axios(config)
-        .then((response) => {
-        console.log(response.data)
-      })
-        .catch((error) => {
-        console.log(error)
-      })
+    const options = {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'basiq-version': '3.0',
+        'content-type': 'application/x-www-form-urlencoded',
+        Authorization: 'Basic MzA4NDMyZTAtNjgzOS00ZGU0LWJkZDEtOWVhMzc2ZWUyZDJhOmNhNzhiODhmLWEyZTgtNDZjOS1iNWZhLTcyZDdjNGI4YTMxNA=='
+      }
     };
-    displayData();
+    
+    fetch('https://au-api.basiq.io/token', options)
+      .then(response => response.json())
+      .then(response => console.log(response))
+      .catch(err => console.error(err));
   }, []);
+  
 
   
   return (
