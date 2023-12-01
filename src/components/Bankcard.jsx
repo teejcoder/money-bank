@@ -13,7 +13,7 @@ const Bankcard = () => {
           'content-type': 'application/x-www-form-urlencoded',
           Authorization: `Basic ${api_key}`,
         },
-        body: new URLSearchParams({ scope: 'CLIENT_ACCESS' }),
+        body: new URLSearchParams({ scope: 'SERVER_ACCESS' }),
         mode: 'cors',
       };
   
