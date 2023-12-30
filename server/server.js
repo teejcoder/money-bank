@@ -19,9 +19,8 @@ app.use("/auth", authRoutes);
 
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  res.render(path.join(__dirname, 'client/src', 'App.js'));
 });  
-
 
 // Start the server
 app.listen(process.env.PORT, () => {
