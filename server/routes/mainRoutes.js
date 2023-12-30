@@ -5,5 +5,6 @@ const mainController = require('../controllers/mainController'); // Import your 
 
 // Define your main route ("/") and specify the controller function
 router.get('/', mainController.renderApp);
+router.get('/profile', mainController.getProfile);
 
 module.exports = router;

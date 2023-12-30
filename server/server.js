@@ -18,9 +18,9 @@ app.use("/", mainRoutes)
 app.use("/auth", authRoutes);
 
 
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-});
+});  
 
 
 // Start the server
