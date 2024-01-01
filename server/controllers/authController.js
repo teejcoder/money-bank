@@ -31,26 +31,34 @@ const authController = {
     }
   },
 
+  getProfile: async (req,res) => {
+
+  },
+
+  //login with email and password
   login: async (req, res) => {
     // Login user
     try {
-      const { email, password } = req.body;
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
+        },
+      })
 
-      const { user, session, error } = await supabase.auth.signIn({
-        email,
-        password,
-      });
-
-      if (error) throw error;
-
-      // Generate JWT token for additional authentication
-      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-      res.json({ message: 'Login successful', user, session, token });
+      console.log('Google Login successful');
     } catch (error) {
       console.error('Error:', error.message);
       res.status(500).json({ error: 'Internal Server Error' });
     }
+  },
+
+  //login with Google OAuth
+  loginWithGoogle: async (req, res) => {
+
   },
 
   logout: async (req, res) => {
