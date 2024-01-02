@@ -10,10 +10,6 @@ const supabase = createClient(
 
 const Login = () => {
 
-  useEffect(() => {
-    
-  })
-
   return (
     <div>
       <Header />

@@ -19,7 +19,7 @@ function Sidebar() {
     setTimeout(() => {
       navigate('/')
       setLogoutStatus(true)
-    });
+    }, 0);
   };
 
   return (
