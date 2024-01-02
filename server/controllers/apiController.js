@@ -1,23 +1,30 @@
 require('dotenv').config();
+const axios = require('axios');
 
 const apiController = {
-  authToken: async () => {
-    const encodedParams = new URLSearchParams();
-    encodedParams.set('scope', 'SERVER_ACCESS');
+
+  //Generate Auth Token Function
+  authToken: () => {
+    const BASIQ_API_KEY = process.env.BASIQ_API_KEY;
 
     const options = {
       method: 'POST',
+      url: 'https://au-api.basiq.io/token',
       headers: {
         accept: 'application/json',
-        'basiq-version': '3.0',
         'content-type': 'application/x-www-form-urlencoded',
         Authorization: `Basic ${BASIQ_API_KEY}`,
-      },
-      body: encodedParams,
+      }
     };
-
-    return fetch('https://au-api.basiq.io/token', options)
-      .then(response => response.json());
+    
+    axios
+      .request(options)
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
   }
 };
 
