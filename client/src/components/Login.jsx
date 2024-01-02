@@ -1,5 +1,4 @@
-// Login.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { Auth } from '@supabase/auth-ui-react';
 import Header from './Header';
@@ -10,12 +9,17 @@ const supabase = createClient(
 );
 
 const Login = () => {
+
+  useEffect(() => {
+    
+  })
+
   return (
     <div>
       <Header />
-      <div className='flex justify-between flex-col items-center py-20 border-b'>
+      <div className='flex h-screen justify-between flex-col items-center py-20'>
         <Auth
-          redirectTo='http://localhost:5001/profile'
+          redirectTo="http://localhost:3000/profile"
           supabaseClient={supabase}
           providers={['google']}
         />

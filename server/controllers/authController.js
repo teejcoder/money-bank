@@ -1,14 +1,15 @@
 // controllers/authController.js
 const { createClient } = require('@supabase/supabase-js');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_API_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+
 const authController = {
+
   register: async (req, res) => {
     // Register a new user
     try {
@@ -31,11 +32,7 @@ const authController = {
     }
   },
 
-  getProfile: async (req,res) => {
-
-  },
-
-  //login with email and password
+  //login with Google
   login: async (req, res) => {
     // Login user
     try {
@@ -56,10 +53,6 @@ const authController = {
     }
   },
 
-  //login with Google OAuth
-  loginWithGoogle: async (req, res) => {
-
-  },
 
   logout: async (req, res) => {
     // Logout user
@@ -73,7 +66,9 @@ const authController = {
       console.error('Error:', error.message);
       res.status(500).json({ error: 'Internal Server Error' });
     }
-  },
+  }
+
+
 };
 
 module.exports = authController;

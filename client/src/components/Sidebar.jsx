@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 
 import { LuLogOut, LuUser2 } from 'react-icons/lu';
-
+import { MdOutlineDarkMode } from "react-icons/md";
 
 function Sidebar() {
   const [logoutStatus, setLogoutStatus] = useState(false);
@@ -49,7 +49,7 @@ function Sidebar() {
             stroke="currentColor"
             className="h-6 w-6 mx-auto"
           >
-            {/* Add your second icon here */}
+            <MdOutlineDarkMode size='26px' color='#000'/>
           </svg>
         </button>
       </div>
