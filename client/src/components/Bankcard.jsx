@@ -6,14 +6,15 @@ const Bankcard = () => {
   const [authToken, setAuthToken] = useState();
 
   const getAuthToken = () => {
-    axios.post('/api/authToken', {}) // Add an empty object as the data payload
-      .then(response => {
-        console.log(response.data.authToken);
-        setAuthToken(response.data.authToken);
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    axios.post('/authToken')
+        .then(function (response) {
+          console.log(response);
+          console.log(response.data.authToken);
+          setAuthToken(response.data.authToken);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { Auth } from '@supabase/auth-ui-react';
 import Header from './Header';
@@ -6,12 +6,9 @@ import Header from './Header';
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 const supabaseKey = process.env.REACT_APP_SUPABASE_API_KEY;
 
-
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
 const Login = () => {
-  console.log(process.env.REACT_APP_SUPABASE_URL);
-  console.log(process.env.REACT_APP_SUPABASE_API_KEY);
 
   return (
     <div>
@@ -28,3 +25,4 @@ const Login = () => {
 };
 
 export default Login;
+ 
