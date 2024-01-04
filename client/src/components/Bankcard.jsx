@@ -5,17 +5,14 @@ import axios from 'axios';
 const Bankcard = () => {
   const [authToken, setAuthToken] = useState();
 
-  const getAuthToken = () => {
-    axios.post('/authToken')
-        .then(function (response) {
-          console.log(response);
-          console.log(response.data.authToken);
-          setAuthToken(response.data.authToken);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-  };
+  async function getAuthToken(){
+    try{
+      const response =  await axios.post('/api/authToken');
+      setAuthToken(response.data.access_token);
+    } catch (error) {
+      console.log(error);
+    };
+  }
 
   return (
     <div className='h-full w-full flex justify-center items-center flex-col'>
