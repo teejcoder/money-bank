@@ -7,10 +7,10 @@ const Bankcard = () => {
 
   async function getAuthToken(){
     try{
-      const response =  await axios.post('/api/authToken');
-      setAuthToken(response.data.access_token);
+      const response =  await axios.post('http://localhost:3000/api/authToken');
+      setAuthToken(response.data);
     } catch (error) {
-      console.log(error);
+      console.error('Error in getAuthToken:', error);
     };
   }
 

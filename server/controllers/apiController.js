@@ -9,9 +9,7 @@ const apiController = {
   authToken: async () => {
 
     try {
-
       console.log('Starting authToken function');
-      
       const encodedParams = new URLSearchParams();
       encodedParams.set('scope', 'SERVER_ACCESS');
 
@@ -30,8 +28,7 @@ const apiController = {
       console.log('Before Axios request');
       const response = await axios(options);
       console.log('After Axios request');
-      
-      console.log(response.data);
+
     } catch (error) {
       console.error('Error:', error);
     }
