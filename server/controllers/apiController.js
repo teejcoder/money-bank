@@ -24,7 +24,7 @@ const apiController = {
       };
 
       console.log('Before Axios request');
-      response = await axios(options);
+      const response = await axios(options);
       console.log(response.data);
       console.log('After Axios request');
       access_token = response.data.access_token;
@@ -57,6 +57,7 @@ const apiController = {
       console.error('Error:', error);
     }
   }
+  
 };
 
 module.exports = apiController;
