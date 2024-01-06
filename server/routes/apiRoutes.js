@@ -9,5 +9,6 @@ router.get("/getBasiqUser", apiController.getBasiqUser);
 
 router.post("/createBasiqUser", apiController.createBasiqUser);
 
+router.get("/getTransactions", apiController.getTransactions);
 
 module.exports = router;

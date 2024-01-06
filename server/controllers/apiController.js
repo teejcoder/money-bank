@@ -8,6 +8,9 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 const BASIQ_API_KEY = process.env.BASIQ_API_KEY;
 
+let access_token; 
+let basiq_user_id; 
+
 const apiController = {
   executeFlow: async () => {
     try {
@@ -32,35 +35,68 @@ const apiController = {
       const response = await axios(options);
       console.log(response.data);
       console.log('After auth request');
-      const access_token = response.data.access_token;
+      access_token = response.data.access_token;
 
-    // Step 2: Check if the user has a basiq_user_id in Supabase DB
-    console.log('Checking Supabase for basiq_user_id');
-    const { data: supabaseData, error: supabaseError } = await supabase
-      .from('users')
-      .select('basiq_user_id')
-      .single();
+      // Step 2: Check if the user has a basiq_user_id in Supabase DB
+      console.log('Checking Supabase for basiq_user_id');
+      const { data: supabaseData, error: supabaseError } = await supabase
+        .from('users')
+        .select('basiq_user_id')
+        .single();
 
-    if (supabaseError) {
-      if (supabaseError.code === 'PGRST116') {
-        console.log('No basiq_user_id found in Supabase');
-      } else {
-        console.error('Error checking Supabase:', supabaseError);
+      if (supabaseError) {
+        if (supabaseError.code === 'PGRST116') {
+          console.log('No basiq_user_id found in Supabase');
+        } else {
+          console.error('Error checking Supabase:', supabaseError);
+        }
       }
-    }
 
-    const basiq_user_id = supabaseData?.basiq_user_id;
+      basiq_user_id = supabaseData?.basiq_user_id;
 
-    // Step 3: If basiq_user_id exists, call getBasiqUser; otherwise, call createBasiqUser
-    if (basiq_user_id) {
-      console.log('Basiq user found in Supabase:', basiq_user_id);
-      await apiController.getBasiqUser(access_token, basiq_user_id);
-    } else {
-      console.log('Basiq user not found in Supabase. Creating...');
-      await apiController.createBasiqUser(access_token);
-    }
+      // Step 3: If basiq_user_id exists, call getBasiqUser; otherwise, call createBasiqUser
+      if (basiq_user_id) {
+        console.log('Basiq user found in Supabase:', basiq_user_id);
+        await apiController.getBasiqUser(access_token, basiq_user_id);
+      } else {
+        console.log('Basiq user not found in Supabase. Creating...');
+        await apiController.createBasiqUser(access_token);
+      }
+
+        // Step 4: Request Auth Link
+        const authLinkOptions = {
+          method: 'POST',
+          url: `https://au-api.basiq.io/users/${basiq_user_id}/auth_link`,
+          headers: {
+            accept: 'application/json',
+            'content-type': 'application/json',
+            authorization: `Bearer ${access_token}`
+          }
+        };
+    
+        await axios.request(authLinkOptions);
+    
+      } catch (error) {
+        console.error('Error:', error);
+      }
+      await apiController.getTransactions(access_token, basiq_user_id);
+  },
+
+
+getTransactions: async (access_token, basiq_user_id) => {
+  try {
+    const options = {
+      method: 'GET',
+      url: `https://au-api.basiq.io/users/${basiq_user_id}/transactions`,
+      headers: {
+        accept: 'application/json',
+        authorization: `Bearer ${access_token}`
+      }
+    };
+    const response = await axios.request(options);
+    console.log('Basiq user transactions:', response.data);
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error fetching transactions:', error);
   }
 },
 
