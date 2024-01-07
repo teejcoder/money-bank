@@ -168,7 +168,7 @@ createBasiqUser: async (access_token) => {
     // Store basiq_user_id in Supabase
     const { data, error } = await supabase
       .from('users')
-      .insert([{basiq_user_id: new_basiq_user_id}])
+      .upsert({basiq_user_id: new_basiq_user_id})
     if (error) {
       console.error('Error storing basiq_user_id in Supabase:', error);
     } if (data){
