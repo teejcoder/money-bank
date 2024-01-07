@@ -62,25 +62,30 @@ const apiController = {
         console.log('Basiq user not found in Supabase. Creating...');
         await apiController.createBasiqUser(access_token);
       }
-
-        // Step 4: Request Auth Link
-        const authLinkOptions = {
-          method: 'POST',
-          url: `https://au-api.basiq.io/users/${basiq_user_id}/auth_link`,
-          headers: {
-            accept: 'application/json',
-            'content-type': 'application/json',
-            authorization: `Bearer ${access_token}`
-          }
-        };
-    
-        await axios.request(authLinkOptions);
-    
+        await apiController.getTransactions(access_token, basiq_user_id);
       } catch (error) {
         console.error('Error:', error);
       }
-      await apiController.getTransactions(access_token, basiq_user_id);
   },
+
+getConsents: async (access_token, basiq_user_id) => {
+  try{
+    const options = {
+      method: 'GET',
+      url: `https://au-api.basiq.io/users/${basiq_user_id}/consents`,
+      headers: {
+        accept: 'application/json',
+        authorization: `Bearer ${access_token}`
+      }
+    };
+    console.log('before getConsents')
+    const response = await axios.request(options)
+    console.log('basiq user consents:', response.data)
+    console.log('after getConsents')
+  } catch (error) {
+    console.error('Error getting getConsents', error)
+  }
+},
 
 
 getTransactions: async (access_token, basiq_user_id) => {
@@ -97,6 +102,27 @@ getTransactions: async (access_token, basiq_user_id) => {
     console.log('Basiq user transactions:', response.data);
   } catch (error) {
     console.error('Error fetching transactions:', error);
+  }
+},
+
+postAuthLink: async (access_token, basiq_user_id) => {
+  const options = {
+    method: 'POST',
+    url: `https://au-api.basiq.io/users/${basiq_user_id}/auth_link`,
+    headers: {
+      accept: 'application/json',
+      'content-type': 'application/json',
+      authorization: `Bearer ${access_token}`
+    },
+    data: { mobile: '+61412460636' }
+  };
+
+  try {
+    const response = await axios.request(options);
+    const authLinkData = response.data;
+    console.log(authLinkData);
+  } catch (error) {
+    console.error(error);
   }
 },
 
