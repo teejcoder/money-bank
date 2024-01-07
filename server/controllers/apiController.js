@@ -62,7 +62,7 @@ const apiController = {
         console.log('Basiq user not found in Supabase. Creating...');
         await apiController.createBasiqUser(access_token);
       }
-        await apiController.getTransactions(access_token, basiq_user_id);
+        // await apiController.getTransactions(access_token, basiq_user_id);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -156,7 +156,7 @@ createBasiqUser: async (access_token) => {
         'content-type': 'application/json',
         authorization: `Bearer ${access_token}`
       },
-      data: { email: 'gavin@hooli.com', firstName: 'Gavin', lastName: 'Belson' }
+      data: { email: 'wentworth-smith@gmail.com', firstName: 'wentworth', lastName: 'smith' }
     };
     console.log('Before createBasiqUser request');
     const response = await axios(options);
@@ -169,7 +169,6 @@ createBasiqUser: async (access_token) => {
     const { data, error } = await supabase
       .from('users')
       .insert([{basiq_user_id: new_basiq_user_id}])
-      .select()
     if (error) {
       console.error('Error storing basiq_user_id in Supabase:', error);
     } if (data){
