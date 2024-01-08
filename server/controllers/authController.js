@@ -1,5 +1,5 @@
 const { createClient } = require('@supabase/supabase-js');
-const bcrypt = require('bcrypt');
+const axios = require('axios');
 require('dotenv').config();
 
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -8,45 +8,35 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 const authController = {
 
-  register: async (req, res) => {
-    // Register a new user
-    try {
-      const { email, password } = req.body;
-      // Hash the password before storing it
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const { user, error } = await supabase.auth.signUp({
-        email,
-        password: hashedPassword,
-      });
-
-      if (error) throw error;
-      res.json({ message: 'User registered successfully', user });
-    } catch (error) {
-      console.error('Error:', error.message);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  },
-
-  //login with Google
+  // login with Google
   login: async (req, res) => {
-    // Login user
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          queryParams: {
-            access_type: 'offline',
-            prompt: 'consent',
-          },
-        },
-      })
+
+
+      // Extract email from user's authentication data
+      const email = user.email;
+      const full_name = user.full_name;
+
+      // Insert the user into the 'users' table
+      const { data, error: insertError } = await supabase
+        .from('users')
+        .insert([{ email, full_name }])
+        .select();
+
+      if (insertError) {
+        console.error('Error storing user data in Supabase:', insertError.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+        return;
+      }
+
+      console.log('User data stored on the server:', data);
       console.log('Google Login successful');
+      res.json({ message: 'Login successful', user });
     } catch (error) {
       console.error('Error:', error.message);
       res.status(500).json({ error: 'Internal Server Error' });
     }
   },
-
 
   logout: async (req, res) => {
     // Logout user
@@ -61,7 +51,6 @@ const authController = {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   }
-
 
 };
 

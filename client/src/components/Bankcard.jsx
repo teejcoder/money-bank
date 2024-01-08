@@ -1,17 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const Bankcard = () => {
+  const [transactions, setTransactions] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:5001/auth/getTransactions');
+        setTransactions(response.data.data)
+      }
+      catch (error) {
+        console.error('Error getting transactions in Bankcard Component', error)
+      }
+      fetchData()
+    }
+  }, []);
 
   const getAuthToken = async () => {
     try {
-      const response = await axios.post('/api/executeFlow');
+      const response = await axios.post('http://localhost:5001/api/executeFlow');
       console.log(response);
     } catch (error) {
       console.error('Error in getAuthToken:', error);
     }
   };
-
 
 
 
@@ -46,6 +59,17 @@ const Bankcard = () => {
       >
         Connect Bank
       </button>
+      <h2>Bank Transactions</h2>
+      <ul>
+        {transactions.map((transaction) => (
+          <li key={transaction.id}>
+            <p>Description: {transaction.description}</p>
+            <p>Amount: {transaction.amount}</p>
+            <p>Date: {transaction.postDate}</p>
+            {/* Add additional fields as needed */}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

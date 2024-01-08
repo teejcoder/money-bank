@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { supabase } from '../supabaseClient';
+import { supabase } from '../config/supabaseClient';
 
 import { LuLogOut, LuUser2 } from 'react-icons/lu';
 import { MdOutlineDarkMode } from "react-icons/md";

@@ -9,7 +9,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 const BASIQ_API_KEY = process.env.BASIQ_API_KEY;
 
 let access_token; 
-let basiq_user_id; 
+const basiq_user_id = "c31ec381-8294-465c-ae21-67f9df0362f1"
 
 const apiController = {
   executeFlow: async () => {
@@ -38,31 +38,29 @@ const apiController = {
       access_token = response.data.access_token;
 
       // Step 2: Check if the user has a basiq_user_id in Supabase DB
-      console.log('Checking Supabase for basiq_user_id');
-      const { data: supabaseData, error: supabaseError } = await supabase
-        .from('users')
-        .select('basiq_user_id')
-        .single();
+      // console.log('Checking Supabase for basiq_user_id');
+      // const { data, error: supabaseError } = await supabase
+      // .from('users')
+      // .select('basiq_user_id');
 
-      if (supabaseError) {
-        if (supabaseError.code === 'PGRST116') {
-          console.log('No basiq_user_id found in Supabase');
-        } else {
-          console.error('Error checking Supabase:', supabaseError);
-        }
-      }
-
-      basiq_user_id = supabaseData?.basiq_user_id;
+      // if (supabaseError) {
+      //   if (supabaseError.code === 'PGRST116') {
+      //     console.log('No basiq_user_id found in Supabase');
+      //   } else {
+      //     console.error('Error checking Supabase:', supabaseError);
+      //   }
+      // }
 
       // Step 3: If basiq_user_id exists, call getBasiqUser; otherwise, call createBasiqUser
-      if (basiq_user_id) {
-        console.log('Basiq user found in Supabase:', basiq_user_id);
+      // if (basiq_user_id) {
+      //   console.log('Basiq user found in Supabase:', basiq_user_id);
         await apiController.getBasiqUser(access_token, basiq_user_id);
-      } else {
-        console.log('Basiq user not found in Supabase. Creating...');
-        await apiController.createBasiqUser(access_token);
-      }
-        // await apiController.getTransactions(access_token, basiq_user_id);
+      // } else {
+      //   console.log('Basiq user not found in Supabase. Creating...');
+      //   await apiController.createBasiqUser(access_token);
+      // }
+        // await apiController.getAccount(access_token, basiq_user_id);
+        await apiController.getTransactions(access_token, basiq_user_id);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -87,12 +85,30 @@ getConsents: async (access_token, basiq_user_id) => {
   }
 },
 
+getAccount: async (access_token, basiq_user_id) => {
+try {
+  const options = {
+    method: 'GET',
+    url: `https://au-api.basiq.io/users/${basiq_user_id}/accounts/6cbd3f54-3623-4a7e-a73a-8cbb351b3487/`,
+    headers: {accept: 'application/json', authorization: `Bearer ${access_token}`}
+  };
+
+  const response = await axios.request(options);
+  console.log('getAccount function:', response.data.links.transactions);
+} catch (error) {
+  console.error(error)
+  console.error('AxiosError:', error);
+  console.error('Response Data:', error.response.data);
+}
+},
+
 
 getTransactions: async (access_token, basiq_user_id) => {
   try {
     const options = {
       method: 'GET',
-      url: `https://au-api.basiq.io/users/${basiq_user_id}/transactions`,
+      url: `https://au-api.basiq.io/users/${basiq_user_id}/transactions?filter=account.id.eq('6cbd3f54-3623-4a7e-a73a-8cbb351b3487')`,
+      params: {limit: '10'},
       headers: {
         accept: 'application/json',
         authorization: `Bearer ${access_token}`
@@ -166,15 +182,16 @@ createBasiqUser: async (access_token) => {
     console.log('Basiq user ID:', new_basiq_user_id);
 
     // Store basiq_user_id in Supabase
-    const { data, error } = await supabase
-      .from('users')
-      .upsert({basiq_user_id: new_basiq_user_id})
-    if (error) {
-      console.error('Error storing basiq_user_id in Supabase:', error);
-    } if (data){
-      console.log(data)
-      console.log('Successfully stored basiq_user_id in Supabase');
-    }
+    // const { data, error } = await supabase
+    //   .from('users')
+    //   .insert({basiq_user_id: new_basiq_user_id})
+    //   .select()
+    // if (error) {
+    //   console.error('Error storing basiq_user_id in Supabase:', error);
+    // } if (data){
+    //   console.log(data)
+    //   console.log('Successfully stored basiq_user_id in Supabase');
+    // }
       console.log('After createBasiqUser request');
     } catch (error) {
       console.error('Error:', error);
