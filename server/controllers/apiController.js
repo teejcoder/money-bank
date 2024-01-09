@@ -12,7 +12,7 @@ let access_token;
 const basiq_user_id = "c31ec381-8294-465c-ae21-67f9df0362f1"
 
 const apiController = {
-  executeFlow: async () => {
+  executeFlow: async (req, res) => {
     try {
       // Step 1: Generate Auth Token
       console.log('Starting auth flow');
@@ -54,19 +54,21 @@ const apiController = {
       // Step 3: If basiq_user_id exists, call getBasiqUser; otherwise, call createBasiqUser
       // if (basiq_user_id) {
       //   console.log('Basiq user found in Supabase:', basiq_user_id);
-        await apiController.getBasiqUser(access_token, basiq_user_id);
+        // await apiController.getBasiqUser(access_token, basiq_user_id, req, res);
       // } else {
       //   console.log('Basiq user not found in Supabase. Creating...');
       //   await apiController.createBasiqUser(access_token);
       // }
-        // await apiController.getAccount(access_token, basiq_user_id);
+        await apiController.getAccount(access_token, basiq_user_id);
         await apiController.getTransactions(access_token, basiq_user_id);
+        res.status(200).send(transactions)
       } catch (error) {
         console.error('Error:', error);
+        res.status(400).send('Execute flow error')
       }
   },
 
-getConsents: async (access_token, basiq_user_id) => {
+getConsents: async (access_token, basiq_user_id, req, res) => {
   try{
     const options = {
       method: 'GET',
@@ -76,16 +78,16 @@ getConsents: async (access_token, basiq_user_id) => {
         authorization: `Bearer ${access_token}`
       }
     };
-    console.log('before getConsents')
     const response = await axios.request(options)
     console.log('basiq user consents:', response.data)
-    console.log('after getConsents')
+    res.status(200).send('getConsents successful')
   } catch (error) {
-    console.error('Error getting getConsents', error)
+    console.error('getConsents error', error)
+    res.status(400).send('getConsents error')
   }
 },
 
-getAccount: async (access_token, basiq_user_id) => {
+getAccount: async (access_token, basiq_user_id, req, res) => {
 try {
   const options = {
     method: 'GET',
@@ -94,16 +96,14 @@ try {
   };
 
   const response = await axios.request(options);
-  console.log('getAccount function:', response.data.links.transactions);
-} catch (error) {
-  console.error(error)
-  console.error('AxiosError:', error);
-  console.error('Response Data:', error.response.data);
-}
+  console.log('getAccount function:', response.data.links.accounts);
+  } catch (error) {
+    console.error('getAccount error:', error);
+  }
 },
 
 
-getTransactions: async (access_token, basiq_user_id) => {
+getTransactions: async (access_token, basiq_user_id, req, res) => {
   try {
     const options = {
       method: 'GET',
@@ -111,17 +111,19 @@ getTransactions: async (access_token, basiq_user_id) => {
       params: {limit: '10'},
       headers: {
         accept: 'application/json',
+        'content-type': 'application/json',
         authorization: `Bearer ${access_token}`
       }
     };
     const response = await axios.request(options);
+    transactions = response.data
     console.log('Basiq user transactions:', response.data);
-  } catch (error) {
+    } catch (error) {
     console.error('Error fetching transactions:', error);
   }
 },
 
-postAuthLink: async (access_token, basiq_user_id) => {
+postAuthLink: async (access_token, basiq_user_id, req, res) => {
   const options = {
     method: 'POST',
     url: `https://au-api.basiq.io/users/${basiq_user_id}/auth_link`,
@@ -142,7 +144,7 @@ postAuthLink: async (access_token, basiq_user_id) => {
   }
 },
 
-getBasiqUser: async (access_token, basiq_user_id) => {
+getBasiqUser: async (access_token, basiq_user_id, req, res) => {
   try {
     console.log('Getting Basiq user');
     const options = {
@@ -160,7 +162,7 @@ getBasiqUser: async (access_token, basiq_user_id) => {
   }
 },
 
-createBasiqUser: async (access_token) => {
+createBasiqUser: async (access_token, req, res) => {
   try {
     console.log('Starting createBasiqUser function');
 
@@ -172,7 +174,7 @@ createBasiqUser: async (access_token) => {
         'content-type': 'application/json',
         authorization: `Bearer ${access_token}`
       },
-      data: { email: 'wentworth-smith@gmail.com', firstName: 'wentworth', lastName: 'smith' }
+      data: { email: 'gavin@hooli.com', firstName: 'Gavin', lastName: 'Belson' }
     };
     console.log('Before createBasiqUser request');
     const response = await axios(options);

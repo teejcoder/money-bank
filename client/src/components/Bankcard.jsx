@@ -4,30 +4,15 @@ import axios from 'axios';
 const Bankcard = () => {
   const [transactions, setTransactions] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:5001/auth/getTransactions');
-        setTransactions(response.data.data)
-      }
-      catch (error) {
-        console.error('Error getting transactions in Bankcard Component', error)
-      }
-      fetchData()
-    }
-  }, []);
-
-  const getAuthToken = async () => {
+  const getAuthToken = async (transactions, req, res) => {
     try {
       const response = await axios.post('http://localhost:5001/api/executeFlow');
       console.log(response);
+      setTransactions(response); // Set the state with the actual array of transactions
     } catch (error) {
       console.error('Error in getAuthToken:', error);
     }
   };
-
-
-
   // const createBasiqUserRequest = async () => {
   //   try {
   //     const response = await axios.post('/api/createBasiqUser');
@@ -61,11 +46,12 @@ const Bankcard = () => {
       </button>
       <h2>Bank Transactions</h2>
       <ul>
-        {transactions.map((transaction) => (
+        {transactions && transactions.map((transaction) => (
           <li key={transaction.id}>
             <p>Description: {transaction.description}</p>
             <p>Amount: {transaction.amount}</p>
             <p>Date: {transaction.postDate}</p>
+            <p>Type: {transaction.direction}</p>
             {/* Add additional fields as needed */}
           </li>
         ))}
