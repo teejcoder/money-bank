@@ -96,7 +96,8 @@ try {
   };
 
   const response = await axios.request(options);
-  console.log('getAccount function:', response.data.links.accounts);
+  account = response.data
+  console.log('getAccount function:', response.data);
   } catch (error) {
     console.error('getAccount error:', error);
   }
@@ -108,7 +109,7 @@ getTransactions: async (access_token, basiq_user_id, req, res) => {
     const options = {
       method: 'GET',
       url: `https://au-api.basiq.io/users/${basiq_user_id}/transactions?filter=account.id.eq('6cbd3f54-3623-4a7e-a73a-8cbb351b3487')`,
-      params: {limit: '10'},
+      params: {limit: '50'},
       headers: {
         accept: 'application/json',
         'content-type': 'application/json',
