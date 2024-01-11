@@ -59,7 +59,6 @@ const apiController = {
       //   console.log('Basiq user not found in Supabase. Creating...');
       //   await apiController.createBasiqUser(access_token);
       // }
-        await apiController.getAccount(access_token, basiq_user_id);
         await apiController.getTransactions(access_token, basiq_user_id);
         res.status(200).send(transactions)
       } catch (error) {
@@ -109,7 +108,7 @@ getTransactions: async (access_token, basiq_user_id, req, res) => {
     const options = {
       method: 'GET',
       url: `https://au-api.basiq.io/users/${basiq_user_id}/transactions?filter=account.id.eq('6cbd3f54-3623-4a7e-a73a-8cbb351b3487')`,
-      params: {limit: '50'},
+      params: {limit: '10'},
       headers: {
         accept: 'application/json',
         'content-type': 'application/json',

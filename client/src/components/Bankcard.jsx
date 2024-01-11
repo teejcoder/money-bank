@@ -3,13 +3,16 @@ import axios from 'axios';
 import Chart from 'chart.js/auto';
 
 const Bankcard = () => {
-  const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState({});
 
   const getTransactions = async () => {
     try {
-      // Fetch transactions using your API
+      // Replace the sample data with the actual data fetching logic
+      console.log('Before getTransactions');
       const response = await axios.post('http://localhost:5001/api/executeFlow');
-      setTransactions(response.data);
+      setTransactions(response.data.data);
+      console.log(response.data.data);
+      console.log('after getTransactions');
       createChart();
     } catch (error) {
       console.error('Error fetching transactions:', error);
@@ -17,30 +20,22 @@ const Bankcard = () => {
   };
 
   const createChart = () => {
-    // Extracting transaction dates and amounts for the chart
-    const labels = transactions.map((transaction) => transaction.postDate);
-    const amounts = transactions.map((transaction) => parseFloat(transaction.amount));
-
-    // Get the canvas element
     const ctx = document.getElementById('transactionChart').getContext('2d');
 
-    // Create the chart
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: labels,
+        labels: transactions.desciption,
         datasets: [{
           label: 'Transaction Amounts',
-          data: amounts,
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          borderColor: 'rgba(75, 192, 192, 1)',
+          data: transactions.amount,
           borderWidth: 1,
         }],
       },
       options: {
         scales: {
           x: {
-            type: 'linear', // Assuming postDate is a date, you might need to adjust this based on your actual data
+            type: 'category', // Use 'category' for dates
             position: 'bottom',
             title: {
               display: true,
@@ -48,6 +43,7 @@ const Bankcard = () => {
             },
           },
           y: {
+            beginAtZero: true,
             type: 'linear',
             position: 'left',
             title: {
@@ -70,7 +66,11 @@ const Bankcard = () => {
         Connect Bank
       </button>
       <h2>Bank Transactions</h2>
-      <canvas id="transactionChart" width="50" height="50"></canvas>
+
+      <div className=''>
+        <canvas id="transactionChart" width="50" height="50">
+        </canvas>
+      </div>
     </div>
   );
 };
