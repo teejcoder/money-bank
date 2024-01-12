@@ -59,6 +59,7 @@ const apiController = {
       //   console.log('Basiq user not found in Supabase. Creating...');
       //   await apiController.createBasiqUser(access_token);
       // }
+        await apiController.getAccount(access_token, basiq_user_id);
         await apiController.getTransactions(access_token, basiq_user_id);
         res.status(200).send(transactions)
       } catch (error) {
@@ -67,138 +68,137 @@ const apiController = {
       }
   },
 
-getConsents: async (access_token, basiq_user_id, req, res) => {
-  try{
-    const options = {
-      method: 'GET',
-      url: `https://au-api.basiq.io/users/${basiq_user_id}/consents`,
-      headers: {
-        accept: 'application/json',
-        authorization: `Bearer ${access_token}`
-      }
-    };
-    const response = await axios.request(options)
-    console.log('basiq user consents:', response.data)
-    res.status(200).send('getConsents successful')
-  } catch (error) {
-    console.error('getConsents error', error)
-    res.status(400).send('getConsents error')
-  }
-},
-
-getAccount: async (access_token, basiq_user_id, req, res) => {
-try {
-  const options = {
-    method: 'GET',
-    url: `https://au-api.basiq.io/users/${basiq_user_id}/accounts/6cbd3f54-3623-4a7e-a73a-8cbb351b3487/`,
-    headers: {accept: 'application/json', authorization: `Bearer ${access_token}`}
-  };
-
-  const response = await axios.request(options);
-  account = response.data
-  console.log('getAccount function:', response.data);
-  } catch (error) {
-    console.error('getAccount error:', error);
-  }
-},
-
-
-getTransactions: async (access_token, basiq_user_id, req, res) => {
-  try {
-    const options = {
-      method: 'GET',
-      url: `https://au-api.basiq.io/users/${basiq_user_id}/transactions?filter=account.id.eq('6cbd3f54-3623-4a7e-a73a-8cbb351b3487')`,
-      params: {limit: '10'},
-      headers: {
-        accept: 'application/json',
-        'content-type': 'application/json',
-        authorization: `Bearer ${access_token}`
-      }
-    };
-    const response = await axios.request(options);
-    transactions = response.data
-    console.log('Basiq user transactions:', response.data);
+  getConsents: async (access_token, basiq_user_id, req, res) => {
+    try{
+      const options = {
+        method: 'GET',
+        url: `https://au-api.basiq.io/users/${basiq_user_id}/consents`,
+        headers: {
+          accept: 'application/json',
+          authorization: `Bearer ${access_token}`
+        }
+      };
+      const response = await axios.request(options)
+      console.log('basiq user consents:', response.data)
+      res.status(200).send('getConsents successful')
     } catch (error) {
-    console.error('Error fetching transactions:', error);
-  }
-},
+      console.error('getConsents error', error)
+      res.status(400).send('getConsents error')
+    }
+  },
 
-postAuthLink: async (access_token, basiq_user_id, req, res) => {
-  const options = {
-    method: 'POST',
-    url: `https://au-api.basiq.io/users/${basiq_user_id}/auth_link`,
-    headers: {
-      accept: 'application/json',
-      'content-type': 'application/json',
-      authorization: `Bearer ${access_token}`
-    },
-    data: { mobile: '+61412460636' }
-  };
-
+  getAccount: async (access_token, basiq_user_id, req, res) => {
   try {
-    const response = await axios.request(options);
-    const authLinkData = response.data;
-    console.log(authLinkData);
-  } catch (error) {
-    console.error(error);
-  }
-},
-
-getBasiqUser: async (access_token, basiq_user_id, req, res) => {
-  try {
-    console.log('Getting Basiq user');
     const options = {
       method: 'GET',
-      url: `https://au-api.basiq.io/users/${basiq_user_id}`,
-      headers: {
-        accept: 'application/json',
-        authorization: `Bearer ${access_token}`
-      }
+      url: `https://au-api.basiq.io/users/${basiq_user_id}/accounts/6cbd3f54-3623-4a7e-a73a-8cbb351b3487/`,
+      headers: {accept: 'application/json', authorization: `Bearer ${access_token}`}
     };
+
     const response = await axios.request(options);
-    console.log('Basiq user data:', response.data);
-  } catch (error) {
-    console.error('Error:', error);
-  }
-},
+    account = response.data
+    console.log('getAccount function:', response.data);
+    } catch (error) {
+      console.error('getAccount error:', error);
+    }
+  },
 
-createBasiqUser: async (access_token, req, res) => {
-  try {
-    console.log('Starting createBasiqUser function');
+  getTransactions: async (access_token, basiq_user_id, req, res) => {
+    try {
+      const options = {
+        method: 'GET',
+        url: `https://au-api.basiq.io/users/${basiq_user_id}/transactions?filter=account.id.eq('6cbd3f54-3623-4a7e-a73a-8cbb351b3487')`,
+        params: {limit: '10'},
+        headers: {
+          accept: 'application/json',
+          'content-type': 'application/json',
+          authorization: `Bearer ${access_token}`
+        }
+      };
+      const response = await axios.request(options);
+      transactions = response.data
+      console.log('Basiq user transactions:', response.data);
+      } catch (error) {
+      console.error('Error fetching transactions:', error);
+    }
+  },
 
+  postAuthLink: async (access_token, basiq_user_id, req, res) => {
     const options = {
       method: 'POST',
-      url: 'https://au-api.basiq.io/users',
+      url: `https://au-api.basiq.io/users/${basiq_user_id}/auth_link`,
       headers: {
         accept: 'application/json',
         'content-type': 'application/json',
         authorization: `Bearer ${access_token}`
       },
-      data: { email: 'gavin@hooli.com', firstName: 'Gavin', lastName: 'Belson' }
+      data: { mobile: '+61412460636' }
     };
-    console.log('Before createBasiqUser request');
-    const response = await axios(options);
-    console.log(response.data);
 
-    const new_basiq_user_id = response.data.id;
-    console.log('Basiq user ID:', new_basiq_user_id);
+    try {
+      const response = await axios.request(options);
+      const authLinkData = response.data;
+      console.log(authLinkData);
+    } catch (error) {
+      console.error(error);
+    }
+  },
 
-    // Store basiq_user_id in Supabase
-    // const { data, error } = await supabase
-    //   .from('users')
-    //   .insert({basiq_user_id: new_basiq_user_id})
-    //   .select()
-    // if (error) {
-    //   console.error('Error storing basiq_user_id in Supabase:', error);
-    // } if (data){
-    //   console.log(data)
-    //   console.log('Successfully stored basiq_user_id in Supabase');
-    // }
+  getBasiqUser: async (access_token, basiq_user_id, req, res) => {
+    try {
+      console.log('Getting Basiq user');
+      const options = {
+        method: 'GET',
+        url: `https://au-api.basiq.io/users/${basiq_user_id}`,
+        headers: {
+          accept: 'application/json',
+          authorization: `Bearer ${access_token}`
+        }
+      };
+      const response = await axios.request(options);
+      console.log('Basiq user data:', response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  },
+
+  createBasiqUser: async (access_token, req, res) => {
+    try {
+      console.log('Starting createBasiqUser function');
+
+      const options = {
+        method: 'POST',
+        url: 'https://au-api.basiq.io/users',
+        headers: {
+          accept: 'application/json',
+          'content-type': 'application/json',
+          authorization: `Bearer ${access_token}`
+        },
+        data: { email: 'gavin@hooli.com', firstName: 'Gavin', lastName: 'Belson' }
+      };
+      console.log('Before createBasiqUser request');
+      const response = await axios(options);
+      console.log(response.data);
+
+      const new_basiq_user_id = response.data.id;
+      console.log('Basiq user ID:', new_basiq_user_id);
+
+      // Store basiq_user_id in Supabase
+      // const { data, error } = await supabase
+      //   .from('users')
+      //   .insert({basiq_user_id: new_basiq_user_id})
+      //   .select()
+      // if (error) {
+      //   console.error('Error storing basiq_user_id in Supabase:', error);
+      // } if (data){
+      //   console.log(data)
+      //   console.log('Successfully stored basiq_user_id in Supabase');
+      // }
       console.log('After createBasiqUser request');
     } catch (error) {
       console.error('Error:', error);
     }
-}
+  }
 };
 
 module.exports = apiController;
