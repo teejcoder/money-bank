@@ -36,7 +36,7 @@ const Bankcard = () => {
     const deposits = [];
 
     transactions.forEach((transaction) => {
-      console.log('Processing transaction:', transaction);
+      // console.log('Processing transaction:', transaction);
       
       const amount = parseFloat(transaction.amount);
       if (transaction.direction === 'debit') {
@@ -53,10 +53,10 @@ const Bankcard = () => {
     console.log('Deposits:', depositTotal);
   
     const data = {
-      labels: ['Withdrawals', 'Deposits'],
+      labels: ['Outgoing', 'Incoming'],
       datasets: [
         {
-          label: 'Transaction Amount',
+          label: 'All Transactions',
           data: [withdrawals.reduce((a, b) => a + b, 0), deposits.reduce((a, b) => a + b, 0)],
           backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)'],
           borderColor: ['rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)'],
@@ -67,101 +67,85 @@ const Bankcard = () => {
   
     const options = {
       scales: {
-        x: {
-          type: 'category',
-          position: 'bottom',
-          title: {
-            display: true,
-            text: 'Transaction Type',
-          },
-        },
-        y: {
-          beginAtZero: true,
-          type: 'linear',
-          position: 'left',
-          title: {
-            display: true,
-            text: 'Amount',
-          },
-        },
+        total: [withdrawTotal + depositTotal]
       },
     };
   
     window.myChart = new Chart(ctx, {
-      type: 'bar',
+      type: 'pie',
       data: data,
       options: options,
     });
   };
 
-  const createLineGraph = () => {
-    const ctx = document.getElementById('transactionChart').getContext('2d');
+  // const createLineGraph = () => {
+  //   const ctx = document.getElementById('transactionChart').getContext('2d');
   
-    if (window.myChart) {
-      window.myChart.destroy();
-    }
-    // Process transactions to separate withdrawals and deposits
-    const withdrawals = [];
-    const deposits = [];
+  //   if (window.myChart) {
+  //     window.myChart.destroy();
+  //   }
+  //   // Process transactions to separate withdrawals and deposits
+  //   const withdrawals = [];
+  //   const deposits = [];
 
-    transactions.forEach((transaction) => {
-      console.log('Processing transaction:', transaction);
+  //   transactions.forEach((transaction) => {
+  //     console.log('Processing transaction:', transaction);
       
-      const amount = parseFloat(transaction.amount);
-      if (transaction.direction === 'debit') {
-        withdrawals.push(amount);
-      } else {
-        deposits.push(amount);
-      }
-    });
+  //     const amount = parseFloat(transaction.amount);
+  //     if (transaction.direction === 'debit') {
+  //       withdrawals.push(amount);
+  //     } else {
+  //       deposits.push(amount);
+  //     }
+  //   });
 
-    let withdrawTotal = withdrawals.reduce((acc,c) => acc + c, 0);
-    let depositTotal = deposits.reduce((acc,c) => acc + c, 0);
+  //   let withdrawTotal = withdrawals.reduce((acc,c) => acc + c, 0);
+  //   let depositTotal = deposits.reduce((acc,c) => acc + c, 0);
 
-    console.log('Withdrawals:', withdrawTotal);
-    console.log('Deposits:', depositTotal);
+  //   console.log('Withdrawals:', withdrawTotal);
+  //   console.log('Deposits:', depositTotal);
   
-    const data = {
-      labels: ['Withdrawals', 'Deposits'],
-      datasets: [
-        {
-          label: 'Transaction Amount',
-          data: [withdrawals.reduce((a, b) => a + b, 0), deposits.reduce((a, b) => a + b, 0)],
-          backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)'],
-          borderColor: ['rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)'],
-          borderWidth: 1,
-        },
-      ],
-    };
+  //   const data = {
+  //     labels: ['Withdrawals', 'Deposits'],
+  //     datasets: [
+  //       {
+  //         label: 'Transaction Amount',
+  //         data: [withdrawals.reduce((a, b) => a + b, 0), deposits.reduce((a, b) => a + b, 0)],
+  //         backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)'],
+  //         borderColor: ['rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)'],
+  //         borderWidth: 1,
+  //       },
+  //     ],
+  //   };
   
-    const options = {
-      scales: {
-        x: {
-          type: 'category',
-          position: 'bottom',
-          title: {
-            display: true,
-            text: 'Transaction Type',
-          },
-        },
-        y: {
-          beginAtZero: true,
-          type: 'linear',
-          position: 'left',
-          title: {
-            display: true,
-            text: 'Amount',
-          },
-        },
-      },
-    };
+  //   const options = {
+  //     scales: {
+  //       x: {
+  //         type: 'category',
+  //         position: 'bottom',
+  //         title: {
+  //           display: true,
+  //           text: 'Transaction Type',
+  //         },
+  //       },
+  //       y: {
+  //         beginAtZero: true,
+  //         type: 'linear',
+  //         position: 'left',
+  //         title: {
+  //           display: true,
+  //           text: 'Amount',
+  //         },
+  //       },
+  //     },
+  //   };
   
-    window.myChart = new Chart(ctx, {
-      type: 'bar',
-      data: data,
-      options: options,
-    });
-  };
+  //   window.myChart = new Chart(ctx, {
+  //     type: 'bar',
+  //     data: data,
+  //     options: options,
+  //   });
+  // };
 
   return (
     <div className='h-full w-full flex justify-center items-center flex-col'>
@@ -174,7 +158,7 @@ const Bankcard = () => {
         </button>
       )}
       
-      {transactions.length > 0 && <h2>Bank Transactions</h2>}
+      {transactions.length > 0 && <h2>Total Bank Transactions</h2>}
 
       <div>
         <canvas id="transactionChart" width="400" height="200"></canvas>
