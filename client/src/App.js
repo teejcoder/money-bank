@@ -1,38 +1,19 @@
-// import { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
+import AuthContext from './contexts/AuthContext';
 import Header from './components/Header';
 import Hero from './components/Hero';
-import Welcome from './components/Welcome';
+import Profile from './components/Profile';
+import Login from './components/Login';
+
 
 const App = () => {
-  // const [backendData, setBackendData] = useState([{}])
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch("/api");
-  //       console.log(response);
-  //       const data = await response.json();
-  //       setBackendData(data);
-  //     } catch (error) {
-  //       console.error('Error fetching data from the server:', error);
-  //     }
-  //   };
-  //   fetchData()
-  // }, [])
-
-  // {(typeof backendData.users === "undefined") ? (
-  //   <p>Loading..</p>
-  // ) : (
-  //   backendData.users.map((user, i) => (
-  //     <p key={i}>{user}</p>
-  // ))
-  // )}
+  const { isAuthenticated } = useContext(AuthContext);
 
   return (
     <div className='font-montserrat'>
       <Header />
       <Hero />
-      <Welcome />
+      {isAuthenticated ? <Profile /> : <Login />}
     </div>
   );
 }

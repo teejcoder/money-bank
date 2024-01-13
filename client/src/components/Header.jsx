@@ -32,12 +32,12 @@ const Header = () => {
 
   return (
     <div className='h-20 w-full bg-white border-b flex justify-between items-center p-10'>
-      <p className='text-2xl md:text-5xl font-bold'>Money Bank</p>
+      <a href="/profile"><p className='text-2xl md:text-5xl font-bold'>Money Bank</p></a>
 
       {loading ? (
         <p>Loading...</p>
       ) : (
-          <p>{userDisplayName ? `Hello, ${userDisplayName}` : 'Hi'}</p>
+        <p>{userDisplayName ? `Hello, ${userDisplayName}` : 'Hi'}</p>
       )}
     </div>
   );

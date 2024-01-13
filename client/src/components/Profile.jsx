@@ -6,11 +6,11 @@ import Bankcard from "./Bankcard";
 function Profile() {
   
   return (
-    <div className="h-screen">
+    <div className="h-screen flex flex-col">
 
       <Header />
-
-      <div className="flex h-5/6">
+      
+      <div className="flex flex-1">
         <Sidebar />
         <Bankcard />
       </div>

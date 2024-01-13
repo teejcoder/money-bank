@@ -13,20 +13,19 @@ const Bankcard = () => {
       createPieChart();
       createBarChart();
       createLineChart();
-      // expenseDoughnutChart();
+      expenseDoughnutChart();
       calculateTotalBalance();
     }
   }, [transactions]);
 
   const destroyCharts = () => {
-    ['myChart', 'barChart', 'lineChart'].forEach(chartName => {
+    ['pieChart', 'barChart', 'lineChart', 'doughnutChart'].forEach(chartName => {
       if (window[chartName]) {
         window[chartName].destroy();
       }
     });
   };
 
-  
   const getTransactions = async () => {
     try {
       console.log('Before getTransactions');
@@ -82,7 +81,7 @@ const Bankcard = () => {
       },
     };
   
-    window.myChart = new Chart(ctx, {
+    window.pieChart = new Chart(ctx, {
       type: 'pie',
       data: data,
       options: options,
@@ -243,7 +242,7 @@ const Bankcard = () => {
       .slice(0, 5); // Take the top 5 expenses
 
     // Extract labels and data for the chart
-    const expenseLabels = topExpenses.map(expense => expense.description);
+    const expenseLabels = topExpenses.map(expense => expense.amount);
     const expenseData = topExpenses.map(expense => Math.abs(parseFloat(expense.amount)));
 
     // Create the doughnut chart
@@ -276,9 +275,9 @@ const Bankcard = () => {
       },
     };
 
-    window.myChart = new Chart(ctx, {
+    window.doughnutChart = new Chart(ctx, {
       type: 'doughnut',
-      data: data.data,
+      data: data,
       options: options,
     })
   };
@@ -294,7 +293,7 @@ const Bankcard = () => {
   }
 
   return (
-    <div className='flex w-full h-full justify-center items-center flex-col'>
+    <div className='flex w-full justify-center items-center flex-col'>
       {transactions.length === 0 ? (
         <>
           <h2 className='mb-5'>Connect bank below</h2>
@@ -305,33 +304,36 @@ const Bankcard = () => {
             Connect Bank
           </button>
         </>
+        
       ) : (
-        <div>
-          <div className='xl:flex items-center justify-center flex-row overflow-x-auto'>
-
-            {/* PIE CHART */}
-            <div className='text-center p-5 chart-container'> 
-              <h3>Income v Expenses</h3>
-              <canvas id="transactionPieChart" width="300" height="200"></canvas>
-              {/* <canvas id="expenseDoughnutChart" width="300" height="200"></canvas> */}
-            </div>
+          <div className='xl:flex items-center justify-center flex-col md:flex-row mt-10 mb-10'>
 
             {/* BAR CHART & TOTAL BALANCE*/}
-            <div className='text-center p-5 chart-container'> 
-              <h2 className='text-4xl'>${totalBalance}</h2>
+            <div className='text-center p-5 chart-container '> 
+              <h2 className='text-5xl'>${totalBalance}</h2>
               <span className='text-gray-400 text-sm'>Available</span>
               <h3 className='mt-20'>Monthly Income v Expenses</h3>
               <canvas id="transactionBarChart" width="400" height="300"></canvas>
             </div>
 
+            {/* PIE CHART */}
+            <div className='flex justify-center items-center flex-col '>
+              <div className='text-center chart-container mb-10'> 
+                <h3>Income v Expenses</h3>
+                <canvas id="transactionPieChart" width="300" height="200"></canvas>
+              </div>
+              <div className='text-center chart-container'> 
+                <canvas id="expenseDoughnutChart" width="300" height="300"></canvas>
+              </div>
+            </div>
+
             {/* LINE CHART */}
-            <div className='text-center p-5 chart-container'> 
+            <div className='text-center p-5 chart-container '> 
               <h3>Net Income Per Month</h3>
               <canvas id="incomeExpenseLineChart" width="400" height="300"></canvas>
             </div>
 
           </div>
-        </div>
       )}
     </div>
   );
