@@ -242,12 +242,12 @@ const Bankcard = () => {
       .slice(0, 5); // Take the top 5 expenses
 
     // Extract labels and data for the chart
-    const expenseLabels = topExpenses.map(expense => expense.amount);
-    const expenseData = topExpenses.map(expense => Math.abs(parseFloat(expense.amount)));
+    const expenseLabels = topExpenses.map(expense => expense.description);
+    const expenseData = topExpenses.map(expense => expense.amount);
 
     // Create the doughnut chart
     const data = {
-      labels: ['Top 5 expenses'],
+      labels: ['Top 5 Transactions'],
       datasets: [
         {
           label: expenseLabels,
@@ -283,12 +283,10 @@ const Bankcard = () => {
   };
 
   const calculateTotalBalance = () => {
-
     const balance = transactions.reduce((acc, transaction) => {
       const amount = parseFloat(transaction.amount);
       return transaction.direction === 'debit' ? acc - amount : acc + amount;
     }, 0);
-
     setTotalBalance(parseFloat(balance.toFixed(2)))
   }
 
@@ -299,41 +297,40 @@ const Bankcard = () => {
           <h2 className='mb-5'>Connect bank below</h2>
           <button
             onClick={getTransactions}
-            className='border border-slate-300 w-1/2 p-2 rounded-3xl hover:bg-indigo-500 hover:text-white hover:font-medium'
+            className='border border-slate-300 w-1/2 md:w-2/5 p-2 rounded-3xl hover:bg-indigo-500 hover:text-white hover:font-medium'
           >
             Connect Bank
           </button>
         </>
-        
       ) : (
-          <div className='xl:flex items-center justify-center flex-col md:flex-row mt-10 mb-10'>
+        <div className='xl:flex items-center justify-center flex-col md:flex-row mt-10 mb-10'>
 
-            {/* BAR CHART & TOTAL BALANCE*/}
-            <div className='text-center p-5 chart-container '> 
-              <h2 className='text-5xl'>${totalBalance}</h2>
-              <span className='text-gray-400 text-sm'>Available</span>
-              <h3 className='mt-20'>Monthly Income v Expenses</h3>
-              <canvas id="transactionBarChart" width="400" height="300"></canvas>
-            </div>
-
-            {/* PIE CHART */}
-            <div className='flex justify-center items-center flex-col '>
-              <div className='text-center chart-container mb-10'> 
-                <h3>Income v Expenses</h3>
-                <canvas id="transactionPieChart" width="300" height="200"></canvas>
-              </div>
-              <div className='text-center chart-container'> 
-                <canvas id="expenseDoughnutChart" width="300" height="300"></canvas>
-              </div>
-            </div>
-
-            {/* LINE CHART */}
-            <div className='text-center p-5 chart-container '> 
-              <h3>Net Income Per Month</h3>
-              <canvas id="incomeExpenseLineChart" width="400" height="300"></canvas>
-            </div>
-
+          {/* BAR CHART & TOTAL BALANCE*/}
+          <div className='text-center p-5 chart-container '> 
+            <h2 className='text-5xl'>${totalBalance}</h2>
+            <span className='text-gray-400 text-sm'>Available</span>
+            <h3 className='mt-20'>Monthly Income v Expenses</h3>
+            <canvas id="transactionBarChart" width="400" height="300"></canvas>
           </div>
+
+          {/* PIE CHART */}
+          <div className='flex justify-center items-center flex-col'>
+            <div className='text-center chart-container'> 
+              <h3>Income v Expenses</h3>
+              <canvas id="transactionPieChart" width="300" height="200"></canvas>
+            </div>
+
+            <div className='text-center chart-container'> 
+              <canvas id="expenseDoughnutChart" width="300" height="300"></canvas>
+            </div>
+          </div>
+
+          {/* LINE CHART */}
+          <div className='text-center p-5 chart-container '> 
+            <h3>Net Income Per Month</h3>
+            <canvas id="incomeExpenseLineChart" width="400" height="300"></canvas>
+          </div>
+        </div>
       )}
     </div>
   );

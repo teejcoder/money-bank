@@ -1,21 +1,26 @@
-import Header from "./Header";
-import Sidebar from "./Sidebar";
-import Footer from "./Footer";
-import Bankcard from "./Bankcard";
+import React, { useState } from 'react';
+import Header from './Header';
+import Sidebar from './Sidebar';
+import Footer from './Footer';
+import Bankcard from './Bankcard';
 
 function Profile() {
-  
+  const [sidebarVisible, setSidebarVisible] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarVisible(!sidebarVisible);
+  };
+
   return (
     <div className="h-screen flex flex-col">
+      <Header toggleSidebar={toggleSidebar} />
 
-      <Header />
-      
       <div className="flex flex-1">
-        <Sidebar />
+        {sidebarVisible && <Sidebar />}
         <Bankcard />
       </div>
 
-      <Footer/>
+      <Footer />
     </div>
   );
 }
