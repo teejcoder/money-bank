@@ -65,7 +65,7 @@ const apiController = {
       } catch (error) {
         console.error('Error:', error);
         res.status(400).send('Execute flow error')
-      }
+      };
   },
 
   getConsents: async (access_token, basiq_user_id, req, res) => {
