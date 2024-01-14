@@ -57,7 +57,7 @@ const Sidebar = () => {
         </svg>
       </button>
 
-      {/* Logout icon */}
+      {/* Logout Icon */}
       <button
         onClick={handleLogout}
         className={`w-full p-4 focus:outline-none ${isDarkMode ? 'hover:bg-btnLight' : 'hover:bg-btnDark'}`}
