@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../config/supabaseClient';
 import { LuLogOut, LuUser2 } from 'react-icons/lu';
-import { MdOutlineDarkMode } from "react-icons/md";
+import { MdOutlineSummarize } from "react-icons/md";
 import { useDarkMode } from '../contexts/DarkModeContext';
 
 const Sidebar = () => {
-  const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const { isDarkMode } = useDarkMode();
   const [logoutStatus, setLogoutStatus] = useState(false);
   const navigate = useNavigate();
 
@@ -27,9 +27,9 @@ const Sidebar = () => {
       {/* Icons at the top */}
       <div className="mt-5">
 
-      {/* Icon 1 */}
+      {/* User settings icon */}
       <button 
-        className={`w-full p-4 hover:bg-blue-300 focus:outline-none ${isDarkMode ? 'text-white' : 'text-black'}`}
+        className={`w-full p-4 focus:outline-none ${isDarkMode ? 'hover:bg-btnLight' : 'hover:bg-btnDark'}`}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -42,8 +42,10 @@ const Sidebar = () => {
         </svg>
       </button>
 
-      {/* Icon 2 */}
-      {/* <button className="w-full p-4 hover:bg-blue-300 focus:outline-none" onClick={toggleDarkMode}>
+      {/* Transactions Icon */}
+      <button 
+        className={`w-full p-4 focus:outline-none ${isDarkMode ? 'hover:bg-btnLight' : 'hover:bg-btnDark'}`}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -51,15 +53,14 @@ const Sidebar = () => {
           stroke="currentColor"
           className="h-6 w-6 mx-auto"
         >
-          {isDarkMode ? 'On' : 'Off'}
-        <MdOutlineDarkMode size='26px' color='#000'/>
+          <MdOutlineSummarize size='26px' color={isDarkMode ? '#fff' : '#000'} />
         </svg>
-      </button> */}
+      </button>
 
-      {/* Logout icon at the bottom */}
+      {/* Logout icon */}
       <button
         onClick={handleLogout}
-        className={`w-full p-4 hover:bg-blue-300 focus:outline-none ${isDarkMode ? 'text-white' : 'text-black'}`}
+        className={`w-full p-4 focus:outline-none ${isDarkMode ? 'hover:bg-btnLight' : 'hover:bg-btnDark'}`}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../config/supabaseClient';
-import { MdOutlineDarkMode } from "react-icons/md";
+import { CiLight, CiDark } from "react-icons/ci";
 import { useDarkMode } from '../contexts/DarkModeContext';
 
 const Header = ({ toggleSidebar }) => {
@@ -52,10 +52,12 @@ const Header = ({ toggleSidebar }) => {
               className={`h-8 w-8 mx-auto ${isDarkMode ? 'text-dark' : 'text-light'}`}
             >
               {isDarkMode ? 'On' : 'Off'}
-            <MdOutlineDarkMode size='26px'/>
+            {isDarkMode ? <CiLight color='#2EC0F9' size='26px'/> : <CiDark color='#8447FF' size='26px'/>}
             </svg>
-          </button>        
+          </button>
+          <div className={`${isDarkMode ? 'text-dark' : 'text-light'}`}>
           <p>{userDisplayName ? `${userDisplayName}` : 'Hi'}</p>
+          </div>        
         </div>
       )}
     </div>

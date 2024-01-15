@@ -8,12 +8,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Dark mode colors
-        textDark: '#FBF5F3',
-        borderDark: '#403D39',
-        // Light mode colors
-        textLight: '#000000',
-        borderLight: '#ffffff',
+        btnDark: '#8447FF', //purple
+        btnLight: '#2EC0F9', //blue
       },
       backgroundColor: {
         light: '#FBF5F3',

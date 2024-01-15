@@ -10,6 +10,7 @@ const Bankcard = () => {
   const [showSpinner, setShowSpinner] = useState(false);
   const [transactions, setTransactions] = useState([]);
   const [totalBalance, setTotalBalance] = useState(0);
+  const [totalDebit, setTotalDebit] = useState(0);
 
   useEffect(() => {
     if (transactions.length > 0) {
@@ -19,6 +20,7 @@ const Bankcard = () => {
       createLineChart();
       expenseDoughnutChart();
       calculateTotalBalance();
+      calculateTotalDebits();
     }
   }, [transactions]);
 
@@ -30,7 +32,7 @@ const Bankcard = () => {
     });
   };
 
-  //Get transactions from controller - executeFlow function
+  //Get transactions - executeFlow function
   const getTransactions = async () => {
     try {
       setShowSpinner(true);
@@ -79,8 +81,8 @@ const Bankcard = () => {
         {
           label: 'All Transactions',
           data: [withdrawals.reduce((a, b) => a + b, 0), deposits.reduce((a, b) => a + b, 0)],
-          backgroundColor: [isDarkMode ? 'rgba(255, 99, 132, 0.5)' : 'rgba(255, 99, 132, 0.2)', isDarkMode ? 'rgba(75, 192, 192, 0.5)' : 'rgba(75, 192, 192, 0.2)'],
-          borderColor: [isDarkMode ? 'rgba(255, 99, 132, 1)' : 'rgba(255, 99, 132, 0.5)', isDarkMode ? 'rgba(75, 192, 192, 1)' : 'rgba(75, 192, 192, 0.5)'],
+          backgroundColor: [isDarkMode ? 'rgba(255, 99, 132, 0.7)' : 'rgba(255, 99, 132, 0.7)', isDarkMode ? 'rgba(75, 192, 192, 0.7)' : 'rgba(75, 192, 192, 0.7)'],
+          borderColor: [isDarkMode ? 'rgba(255, 99, 132, 0.1)' : 'rgba(255, 99, 132, 0.1)', isDarkMode ? 'rgba(75, 192, 192, 0.5)' : 'rgba(75, 192, 192, 0.5)'],
           borderWidth: 1,
         },
       ],
@@ -131,7 +133,7 @@ const Bankcard = () => {
           label: 'Income',
           data: incomeData,
           color: isDarkMode ? '#FBF5F3' : '#000000',
-          backgroundColor: isDarkMode ? '#4BC0C0' : 'rgba(75, 192, 192, 0.2)',
+          backgroundColor: isDarkMode ? '#4BC0C0' : 'rgba(75, 192, 192, 1)',
           borderColor: isDarkMode ? '#4BC0C0' : 'rgba(75, 192, 192, 1)',
           borderWidth: 1,
         },
@@ -139,7 +141,7 @@ const Bankcard = () => {
           label: 'Expenses',
           data: expensesData,
           color: isDarkMode ? '#FBF5F3' : '#000000',
-          backgroundColor: isDarkMode ? '#FF6384' : 'rgba(255, 99, 132, 0.2)',
+          backgroundColor: isDarkMode ? '#FF6384' : 'rgba(255, 99, 132, 1)',
           borderColor: isDarkMode ? '#FF6384' : 'rgba(255, 99, 132, 1)',
           borderWidth: 1,
         },
@@ -157,9 +159,10 @@ const Bankcard = () => {
           title: {
             display: true,
             text: 'Month-Year',
+            color: isDarkMode ? '#BABABA' : '#6C6B6B',
           },
           grid: {
-            color: isDarkMode ? '#BABABA' : '#e0e0e0', // X-axis grid line color
+            color: isDarkMode ? '#BABABA' : '#e0e0e0',
           },
         },
         y: {
@@ -173,9 +176,10 @@ const Bankcard = () => {
           title: {
             display: true,
             text: 'Amount',
+            color: isDarkMode ? '#BABABA' : '#6C6B6B',
           },
           grid: {
-            color: isDarkMode ? '#BABABA' : '#e0e0e0', // Y-axis grid line color
+            color: isDarkMode ? '#BABABA' : '#e0e0e0', 
           },
         },
       },
@@ -220,9 +224,9 @@ const Bankcard = () => {
           data: netIncomeData,
           fill: false,
           color: isDarkMode ? '#FBF5F3' : '#000000',
-          backgroundColor: isDarkMode ? '#4BC0C0' : 'rgba(75, 192, 192, 0.2)',
+          backgroundColor: isDarkMode ? '#4BC0C0' : 'rgba(75, 192, 192, 0.7)',
           borderColor: isDarkMode ? '#4BC0C0' : 'rgba(75, 192, 192, 1)',
-          borderWidth: 1,
+          borderWidth: 2,
           pointRadius: 5,
         },
       ],
@@ -239,9 +243,10 @@ const Bankcard = () => {
           title: {
             display: true,
             text: 'Month-Year',
+            color: isDarkMode ? '#BABABA' : '#6C6B6B',
           },
           grid: {
-            color: isDarkMode ? '#BABABA' : '#e0e0e0', // X-axis grid line color
+            color: isDarkMode ? '#BABABA' : '#e0e0e0',
           },
         },
         y: {
@@ -254,9 +259,10 @@ const Bankcard = () => {
           title: {
             display: true,
             text: 'Net Income',
+            color: isDarkMode ? '#BABABA' : '#6C6B6B',
           },
           grid: {
-            color: isDarkMode ? '#BABABA' : '#e0e0e0', // X-axis grid line color
+            color: isDarkMode ? '#BABABA' : '#e0e0e0',
           },
         },
       },
@@ -280,8 +286,9 @@ const Bankcard = () => {
       .slice(0, 5); // Take the top 5 expenses
 
     // Extract labels and data for the chart
-    const expenseLabels = topExpenses.map(expense => expense.description);
     const expenseData = topExpenses.map(expense => expense.amount);
+    const expenseLabels = topExpenses.map(expense => expense.description);
+
 
     // Create the doughnut chart
     const data = {
@@ -290,6 +297,13 @@ const Bankcard = () => {
         {
           label: expenseLabels,
           data: expenseData,
+          borderColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+          ],
           backgroundColor: [
             'rgba(255, 99, 132, 0.7)',
             'rgba(54, 162, 235, 0.7)',
@@ -297,6 +311,7 @@ const Bankcard = () => {
             'rgba(75, 192, 192, 0.7)',
             'rgba(153, 102, 255, 0.7)',
           ],
+          hoverOffset: 4
         },
       ],
     }
@@ -329,6 +344,18 @@ const Bankcard = () => {
     setTotalBalance(parseFloat(balance.toFixed(2)))
   }
 
+  const calculateTotalDebits = () => {
+
+    const debits = transactions.filter((transaction) => {
+      return transaction.direction === 'debit'
+    })
+    const totalDebits = debits.reduce((acc, transaction) => {
+    const amount = parseFloat(transaction.amount);
+    return acc + amount
+  }, 0);
+  setTotalDebit(parseFloat(totalDebits.toFixed(2)))
+  }
+
   return (
     <div className={`flex w-full justify-center items-center flex-col ${isDarkMode ? 'bg-dark text-dark' : 'bg-light text-light'}`}>
       {transactions.length === 0 ? (
@@ -348,7 +375,7 @@ const Bankcard = () => {
           <div className='text-center p-5 chart-container'> 
             <h2 className='text-5xl'>${totalBalance}</h2>
             <span className='text-gray-400 text-sm'>Available</span>
-            <h3 className='mt-20'>Monthly Income v Expenses</h3>
+            <h3 className='mt-10'>Monthly Income v Expenses</h3>
             <canvas id="transactionBarChart" width="400" height="300"></canvas>
           </div>
 
@@ -365,8 +392,10 @@ const Bankcard = () => {
           </div>
 
           {/* LINE CHART */}
-          <div className='text-center p-5 chart-container'> 
-            <h3>Net Income Per Month</h3>
+          <div className='text-center p-5 chart-container'>
+            <h2 className='text-5xl'>${totalDebit}</h2>
+            <span className='text-gray-400 text-sm'>Spend this Range</span> 
+            <h3 className='mt-10'>Net Income Per Month</h3>
             <canvas id="incomeExpenseLineChart" className="w-full" height="300" width="400"></canvas>
           </div>
         </div>
