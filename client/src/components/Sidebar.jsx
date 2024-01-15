@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../config/supabaseClient';
 import { LuLogOut, LuUser2 } from 'react-icons/lu';
 import { MdOutlineDarkMode } from "react-icons/md";
+import { useDarkMode } from '../contexts/DarkModeContext';
 
-function Sidebar() {
+const Sidebar = () => {
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
   const [logoutStatus, setLogoutStatus] = useState(false);
   const navigate = useNavigate();
 
@@ -21,12 +23,14 @@ function Sidebar() {
   };
 
   return (
-    <aside className="fixed top-0 mt-20 h-52 w-full sm:h-full sm:w-24 flex flex-col justify-between border-r z-50 bg-white">
+    <aside className="fixed top-0 mt-20 h-52 w-full sm:h-full sm:w-24 flex flex-col justify-between border-r z-50">
       {/* Icons at the top */}
       <div className="mt-5">
 
       {/* Icon 1 */}
-      <button className="w-full p-4 hover:bg-blue-300 focus:outline-none">
+      <button 
+        className={`w-full p-4 hover:bg-blue-300 focus:outline-none ${isDarkMode ? 'text-white' : 'text-black'}`}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -34,12 +38,12 @@ function Sidebar() {
           stroke="currentColor"
           className="h-6 w-6 mx-auto"
         >
-          <LuUser2 size='26px' color='#000'/>
+          <LuUser2 size='26px' color={isDarkMode ? '#fff' : '#000'}/>
         </svg>
       </button>
 
       {/* Icon 2 */}
-      <button className="w-full p-4 hover:bg-blue-300 focus:outline-none">
+      {/* <button className="w-full p-4 hover:bg-blue-300 focus:outline-none" onClick={toggleDarkMode}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -47,12 +51,16 @@ function Sidebar() {
           stroke="currentColor"
           className="h-6 w-6 mx-auto"
         >
-          <MdOutlineDarkMode size='26px' color='#000'/>
+          {isDarkMode ? 'On' : 'Off'}
+        <MdOutlineDarkMode size='26px' color='#000'/>
         </svg>
-      </button>
+      </button> */}
 
       {/* Logout icon at the bottom */}
-      <button onClick={handleLogout} className="w-full p-4 hover:bg-blue-300 focus:outline-none">
+      <button
+        onClick={handleLogout}
+        className={`w-full p-4 hover:bg-blue-300 focus:outline-none ${isDarkMode ? 'text-white' : 'text-black'}`}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -60,7 +68,7 @@ function Sidebar() {
           stroke="currentColor"
           className="h-6 w-6 mx-auto"
         >
-          <LuLogOut size='26px' color='#000' />
+          <LuLogOut size='26px' color={isDarkMode ? '#fff' : '#000'} />
         </svg>
       </button>
       </div>

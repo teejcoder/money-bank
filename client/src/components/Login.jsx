@@ -3,6 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import Header from './Header';
+import { useDarkMode } from '../contexts/DarkModeContext';
 
 const axios = require('axios');
 
@@ -12,6 +13,7 @@ const supabaseKey = process.env.REACT_APP_SUPABASE_API_KEY;
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
 const Login = () => {
+  const { isDarkMode } = useDarkMode();
 
   // useEffect(() => {
   //   const authListener = supabase.auth.onAuthStateChange(async (event, session) => {
@@ -26,7 +28,7 @@ const Login = () => {
   return (
     <div>
       <Header />
-      <div className='flex h-screen justify-between flex-col items-center py-20'>
+      <div className={`flex h-screen justify-between flex-col items-center py-20 ${isDarkMode ? 'bg-dark text-dark' : 'bg-light text-light'}`}>
         <Auth
           redirectTo="http://localhost:3000/profile"
           supabaseClient={supabase}

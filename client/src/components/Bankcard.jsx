@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Chart from 'chart.js/auto';
+import { useDarkMode } from '../contexts/DarkModeContext';
+import Button from './Button';
 
 const Bankcard = () => {
+  const { isDarkMode } = useDarkMode();
   const [isLoading, setIsLoading] = useState(false);
   const [transactions, setTransactions] = useState([]);
   const [totalBalance, setTotalBalance] = useState(0);
@@ -26,6 +29,7 @@ const Bankcard = () => {
     });
   };
 
+  //Get transactions from controller - executeFlow function
   const getTransactions = async () => {
     try {
       console.log('Before getTransactions');
@@ -39,6 +43,7 @@ const Bankcard = () => {
     }
   };
 
+  //Pie Chart
   const createPieChart = () => {
     const ctx = document.getElementById('transactionPieChart').getContext('2d');
   
@@ -88,6 +93,7 @@ const Bankcard = () => {
     });
   };
 
+    //Bar Graph
   const createBarChart = () => {
     const ctx = document.getElementById('transactionBarChart').getContext('2d');
 
@@ -163,6 +169,7 @@ const Bankcard = () => {
     });
   };
 
+  //Line chart
   const createLineChart = () => {
     const ctx = document.getElementById('incomeExpenseLineChart').getContext('2d');
 
@@ -232,6 +239,7 @@ const Bankcard = () => {
     });
   };
 
+  //Doughnut chart
   const expenseDoughnutChart = () => {
     const ctx = document.getElementById('expenseDoughnutChart').getContext('2d');
 
@@ -247,7 +255,7 @@ const Bankcard = () => {
 
     // Create the doughnut chart
     const data = {
-      labels: ['Top 5 Transactions'],
+      labels: ['Top 5 Debits'],
       datasets: [
         {
           label: expenseLabels,
@@ -282,6 +290,7 @@ const Bankcard = () => {
     })
   };
 
+  //Total balance credit minus debit
   const calculateTotalBalance = () => {
     const balance = transactions.reduce((acc, transaction) => {
       const amount = parseFloat(transaction.amount);
@@ -291,26 +300,26 @@ const Bankcard = () => {
   }
 
   return (
-    <div className='flex w-full justify-center items-center flex-col'>
+    <div className={`flex w-full justify-center items-center flex-col ${isDarkMode ? 'bg-dark text-dark' : 'bg-light text-light'}`}>
       {transactions.length === 0 ? (
         <>
           <h2 className='mb-5'>Connect bank below</h2>
-          <button
+          <Button
             onClick={getTransactions}
-            className='border border-slate-300 w-1/2 md:w-2/5 p-2 rounded-3xl hover:bg-indigo-500 hover:text-white hover:font-medium'
+            className='border border-borderLight w-1/2 md:w-2/5 p-2 rounded-3xl hover:bg-indigo-500 hover:text-white hover:font-medium'
           >
             Connect Bank
-          </button>
+          </Button>
         </>
       ) : (
         <div className='xl:flex items-center justify-center flex-col md:flex-row mt-10 mb-10'>
-
+          
           {/* BAR CHART & TOTAL BALANCE*/}
-          <div className='text-center p-5 chart-container '> 
+          <div className='text-center p-5 chart-container'> 
             <h2 className='text-5xl'>${totalBalance}</h2>
             <span className='text-gray-400 text-sm'>Available</span>
             <h3 className='mt-20'>Monthly Income v Expenses</h3>
-            <canvas id="transactionBarChart" width="400" height="300"></canvas>
+            <canvas id="transactionBarChart" className="w-full md:w-1/2 lg:w-1/3" height="300"></canvas>
           </div>
 
           {/* PIE CHART */}
@@ -319,16 +328,16 @@ const Bankcard = () => {
               <h3>Income v Expenses</h3>
               <canvas id="transactionPieChart" width="300" height="200"></canvas>
             </div>
-
+            {/* DOUGHNUT CHART */}
             <div className='text-center chart-container'> 
               <canvas id="expenseDoughnutChart" width="300" height="300"></canvas>
             </div>
           </div>
 
           {/* LINE CHART */}
-          <div className='text-center p-5 chart-container '> 
+          <div className='text-center p-5 chart-container md:w-1/2 lg:w-fulllg:h-full'> 
             <h3>Net Income Per Month</h3>
-            <canvas id="incomeExpenseLineChart" width="400" height="300"></canvas>
+            <canvas id="incomeExpenseLineChart" className="w-full" height="300"></canvas>
           </div>
         </div>
       )}

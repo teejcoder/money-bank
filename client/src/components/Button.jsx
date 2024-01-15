@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
+import { useDarkMode } from '../contexts/DarkModeContext';
 
-const Button = ({children, backgroundColor}) => {
+const Button = ({ children, onClick }) => {
+  const { isDarkMode } = useDarkMode();
 
   const buttonStyle = {
-    backgroundColor: backgroundColor || 'black', 
+    backgroundColor: isDarkMode ? '#2EC0F9' : '#8447FF',
     color: 'white',
     padding: '10px 20px',
     border: 'none',
@@ -12,7 +14,7 @@ const Button = ({children, backgroundColor}) => {
   };
 
   return (
-    <button style={buttonStyle} className='w-48 h-12 border m-5'>
+    <button style={buttonStyle} onClick={onClick} className='w-3/6 h-12 border m-5 text-sm md:text-2xl'>
       {children}
     </button>
   )
