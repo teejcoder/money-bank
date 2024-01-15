@@ -23,7 +23,7 @@ const Header = ({ toggleSidebar }) => {
             setError(error.message);
           }
         } catch (error) {
-          console.error('Error fetching user:', error.message);
+          console.error('Error fetching user:', error);
           setError('An error occurred while fetching user data.');
         } finally {
           setLoading(false);

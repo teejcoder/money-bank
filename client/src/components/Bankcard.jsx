@@ -3,10 +3,11 @@ import axios from 'axios';
 import Chart from 'chart.js/auto';
 import { useDarkMode } from '../contexts/DarkModeContext';
 import Button from './Button';
+import Spinner from './Spinner'
 
 const Bankcard = () => {
   const { isDarkMode } = useDarkMode();
-  const [isLoading, setIsLoading] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(false);
   const [transactions, setTransactions] = useState([]);
   const [totalBalance, setTotalBalance] = useState(0);
 
@@ -32,14 +33,19 @@ const Bankcard = () => {
   //Get transactions from controller - executeFlow function
   const getTransactions = async () => {
     try {
+      setShowSpinner(true);
       console.log('Before getTransactions');
+
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
       const response = await axios.post('http://localhost:5001/api/executeFlow');
-      
       setTransactions(response.data.data);
       console.log(response.data.data);
       console.log('after getTransactions');
     } catch (error) {
       console.error('Error fetching transactions:', error);
+    } finally {
+      setShowSpinner(false); // Hide the spinner after the fetch is complete
     }
   };
 
@@ -73,8 +79,8 @@ const Bankcard = () => {
         {
           label: 'All Transactions',
           data: [withdrawals.reduce((a, b) => a + b, 0), deposits.reduce((a, b) => a + b, 0)],
-          backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)'],
-          borderColor: ['rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)'],
+          backgroundColor: [isDarkMode ? 'rgba(255, 99, 132, 0.5)' : 'rgba(255, 99, 132, 0.2)', isDarkMode ? 'rgba(75, 192, 192, 0.5)' : 'rgba(75, 192, 192, 0.2)'],
+          borderColor: [isDarkMode ? 'rgba(255, 99, 132, 1)' : 'rgba(255, 99, 132, 0.5)', isDarkMode ? 'rgba(75, 192, 192, 1)' : 'rgba(75, 192, 192, 0.5)'],
           borderWidth: 1,
         },
       ],
@@ -93,21 +99,19 @@ const Bankcard = () => {
     });
   };
 
-    //Bar Graph
+  //Bar Graph
   const createBarChart = () => {
     const ctx = document.getElementById('transactionBarChart').getContext('2d');
-
+  
     // Process transactions to separate income and expenses by month
     const monthlyData = {};
-
+  
     transactions.forEach((transaction) => {
       const date = new Date(transaction.postDate);
       const monthYearKey = `${date.getMonth() + 1}/${date.getFullYear()}`;
-
       if (!monthlyData[monthYearKey]) {
         monthlyData[monthYearKey] = { income: 0, expenses: 0 };
       }
-
       const amount = parseFloat(transaction.amount);
       if (transaction.direction === 'debit') {
         monthlyData[monthYearKey].expenses += amount;
@@ -115,42 +119,54 @@ const Bankcard = () => {
         monthlyData[monthYearKey].income += amount;
       }
     });
-
+  
     const months = Object.keys(monthlyData);
     const incomeData = months.map((key) => monthlyData[key].income);
     const expensesData = months.map((key) => monthlyData[key].expenses);
-
+  
     const data = {
       labels: months,
       datasets: [
         {
           label: 'Income',
           data: incomeData,
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          borderColor: 'rgba(75, 192, 192, 1)',
+          color: isDarkMode ? '#FBF5F3' : '#000000',
+          backgroundColor: isDarkMode ? '#4BC0C0' : 'rgba(75, 192, 192, 0.2)',
+          borderColor: isDarkMode ? '#4BC0C0' : 'rgba(75, 192, 192, 1)',
           borderWidth: 1,
         },
         {
           label: 'Expenses',
           data: expensesData,
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgba(255, 99, 132, 1)',
+          color: isDarkMode ? '#FBF5F3' : '#000000',
+          backgroundColor: isDarkMode ? '#FF6384' : 'rgba(255, 99, 132, 0.2)',
+          borderColor: isDarkMode ? '#FF6384' : 'rgba(255, 99, 132, 1)',
           borderWidth: 1,
         },
       ],
     };
-
+  
     const options = {
       scales: {
         x: {
+          ticks: {
+            color: isDarkMode ? '#BABABA' : '#6C6B6B',
+          },
           type: 'category',
           position: 'bottom',
           title: {
             display: true,
             text: 'Month-Year',
           },
+          grid: {
+            color: isDarkMode ? '#BABABA' : '#e0e0e0', // X-axis grid line color
+          },
         },
         y: {
+          ticks: {
+            color: isDarkMode ? '#BABABA' : '#6C6B6B',
+          },
+          color:'white',
           beginAtZero: true,
           type: 'linear',
           position: 'left',
@@ -158,10 +174,13 @@ const Bankcard = () => {
             display: true,
             text: 'Amount',
           },
+          grid: {
+            color: isDarkMode ? '#BABABA' : '#e0e0e0', // Y-axis grid line color
+          },
         },
       },
     };
-
+  
     window.barChart = new Chart(ctx, {
       type: 'bar',
       data: data,
@@ -179,11 +198,9 @@ const Bankcard = () => {
     transactions.forEach((transaction) => {
       const date = new Date(transaction.postDate);
       const monthYearKey = `${date.getMonth() + 1}/${date.getFullYear()}`;
-
       if (!monthlyData[monthYearKey]) {
         monthlyData[monthYearKey] = 0;
       }
-
       const amount = parseFloat(transaction.amount);
       if (transaction.direction === 'credit') {
         monthlyData[monthYearKey] += amount;
@@ -202,9 +219,10 @@ const Bankcard = () => {
           label: 'Net Income',
           data: netIncomeData,
           fill: false,
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          borderColor: 'rgba(75, 192, 192, 1)',
-          borderWidth: 2,
+          color: isDarkMode ? '#FBF5F3' : '#000000',
+          backgroundColor: isDarkMode ? '#4BC0C0' : 'rgba(75, 192, 192, 0.2)',
+          borderColor: isDarkMode ? '#4BC0C0' : 'rgba(75, 192, 192, 1)',
+          borderWidth: 1,
           pointRadius: 5,
         },
       ],
@@ -213,20 +231,32 @@ const Bankcard = () => {
     const options = {
       scales: {
         x: {
+          ticks: {
+            color: isDarkMode ? '#BABABA' : '#6C6B6B',
+          },
           type: 'category',
           position: 'bottom',
           title: {
             display: true,
             text: 'Month-Year',
           },
+          grid: {
+            color: isDarkMode ? '#BABABA' : '#e0e0e0', // X-axis grid line color
+          },
         },
         y: {
+          ticks: {
+            color: isDarkMode ? '#BABABA' : '#6C6B6B',
+          },
           beginAtZero: true,
           type: 'linear',
           position: 'left',
           title: {
             display: true,
             text: 'Net Income',
+          },
+          grid: {
+            color: isDarkMode ? '#BABABA' : '#e0e0e0', // X-axis grid line color
           },
         },
       },
@@ -303,13 +333,13 @@ const Bankcard = () => {
     <div className={`flex w-full justify-center items-center flex-col ${isDarkMode ? 'bg-dark text-dark' : 'bg-light text-light'}`}>
       {transactions.length === 0 ? (
         <>
-          <h2 className='mb-5'>Connect bank below</h2>
           <Button
             onClick={getTransactions}
             className='border border-borderLight w-1/2 md:w-2/5 p-2 rounded-3xl hover:bg-indigo-500 hover:text-white hover:font-medium'
           >
             Connect Bank
           </Button>
+          {showSpinner && <Spinner/>}
         </>
       ) : (
         <div className='xl:flex items-center justify-center flex-col md:flex-row mt-10 mb-10'>
@@ -319,7 +349,7 @@ const Bankcard = () => {
             <h2 className='text-5xl'>${totalBalance}</h2>
             <span className='text-gray-400 text-sm'>Available</span>
             <h3 className='mt-20'>Monthly Income v Expenses</h3>
-            <canvas id="transactionBarChart" className="w-full md:w-1/2 lg:w-1/3" height="300"></canvas>
+            <canvas id="transactionBarChart" width="400" height="300"></canvas>
           </div>
 
           {/* PIE CHART */}
@@ -335,9 +365,9 @@ const Bankcard = () => {
           </div>
 
           {/* LINE CHART */}
-          <div className='text-center p-5 chart-container md:w-1/2 lg:w-fulllg:h-full'> 
+          <div className='text-center p-5 chart-container'> 
             <h3>Net Income Per Month</h3>
-            <canvas id="incomeExpenseLineChart" className="w-full" height="300"></canvas>
+            <canvas id="incomeExpenseLineChart" className="w-full" height="300" width="400"></canvas>
           </div>
         </div>
       )}

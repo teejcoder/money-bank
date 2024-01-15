@@ -11,14 +11,13 @@ module.exports = {
         // Dark mode colors
         textDark: '#FBF5F3',
         borderDark: '#403D39',
-
         // Light mode colors
         textLight: '#000000',
         borderLight: '#ffffff',
       },
       backgroundColor: {
         light: '#FBF5F3',
-        dark: '#494850',
+        dark: '#2B2C28',
       },
       btnBackgroundColor: {
         light: '#8447FF',

@@ -23,7 +23,7 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="fixed top-0 mt-20 h-52 w-full sm:h-full sm:w-24 flex flex-col justify-between border-r z-50">
+    <aside className={`fixed top-0 mt-20 h-40 w-full xl:h-full xl:w-24 flex flex-col justify-between border-b sm:border-r z-50 ${isDarkMode ? 'bg-dark' : 'bg-light'}`}>
       {/* Icons at the top */}
       <div className="mt-5">
 

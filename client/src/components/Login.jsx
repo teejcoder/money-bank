@@ -6,7 +6,6 @@ import Header from './Header';
 import { useDarkMode } from '../contexts/DarkModeContext';
 
 const axios = require('axios');
-
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 const supabaseKey = process.env.REACT_APP_SUPABASE_API_KEY;
 
