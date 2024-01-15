@@ -1,28 +1,38 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import Header from './Header';
 import { useDarkMode } from '../contexts/DarkModeContext';
+import axios from 'axios';
 
-const axios = require('axios');
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 const supabaseKey = process.env.REACT_APP_SUPABASE_API_KEY;
-
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
 const Login = () => {
   const { isDarkMode } = useDarkMode();
+  const [email, setEmail] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [googleId, setGoogleId] = useState('');
 
-  // useEffect(() => {
-  //   const authListener = supabase.auth.onAuthStateChange(async (event, session) => {
-  //     if (event === 'SIGNED_IN' && session?.user) {
-  //       const email = session.user.email;
-  //       const fullName = session.user.user_metadata?.full_name || '';
-  //       await axios.post("/auth/login", { email, fullName });
-  //     }
-  //   });
-  // }, []);
+  const loginWithGoogle = async (session, user) => {
+    try {
+      console.log('before loginWithGoogle function in Login component')
+
+      const response = await axios.post('http://localhost:5001/auth/login')
+
+      console.log('loginWithGoogle response: ', response);
+      console.log(email, fullName, googleId)
+      setEmail(response.data.email);
+      setFullName(response.data.full_name);
+      setGoogleId(response.data.googleId);
+      console.log('after loginWithGoogle function')
+
+    } catch(error) {
+      console.error(error)
+    };
+  };
 
   return (
     <div>
@@ -38,10 +48,12 @@ const Login = () => {
             prompt: 'consent',
             hd: 'domain.com',
           }}
+          onSuccess={loginWithGoogle}
         />
       </div>
     </div>
   );
 };
+
 
 export default Login;
