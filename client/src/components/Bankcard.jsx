@@ -286,13 +286,14 @@ const Bankcard = () => {
       .slice(0, 5); // Take the top 5 expenses
 
     // Extract labels and data for the chart
-    const expenseData = topExpenses.map(expense => expense.amount);
     const expenseLabels = topExpenses.map(expense => expense.description);
-
+    const expenseData = topExpenses.map(expense => expense.amount);
 
     // Create the doughnut chart
     const data = {
-      labels: ['Top 5 Debits'],
+      labels: [
+        expenseLabels,
+      ],
       datasets: [
         {
           label: expenseLabels,
@@ -360,20 +361,20 @@ const Bankcard = () => {
     <div className={`flex w-full justify-center items-center flex-col ${isDarkMode ? 'bg-dark text-dark' : 'bg-light text-light'}`}>
       {transactions.length === 0 ? (
         <>
+          {showSpinner && <Spinner/>}
           <Button
             onClick={getTransactions}
             className='border border-borderLight w-1/2 md:w-2/5 p-2 rounded-3xl hover:bg-indigo-500 hover:text-white hover:font-medium'
           >
             Connect Bank
           </Button>
-          {showSpinner && <Spinner/>}
         </>
       ) : (
         <div className='xl:flex items-center justify-center flex-col md:flex-row mt-10 mb-10'>
           
           {/* BAR CHART & TOTAL BALANCE*/}
           <div className='text-center p-5 chart-container'> 
-            <h2 className='text-5xl'>${totalBalance}</h2>
+            <h2 className='text-5xl text-green-600'>${totalBalance}</h2>
             <span className='text-gray-400 text-sm'>Available</span>
             <h3 className='mt-10'>Monthly Income v Expenses</h3>
             <canvas id="transactionBarChart" width="400" height="300"></canvas>
@@ -393,7 +394,7 @@ const Bankcard = () => {
 
           {/* LINE CHART */}
           <div className='text-center p-5 chart-container'>
-            <h2 className='text-5xl'>${totalDebit}</h2>
+            <h2 className='text-5xl text-red-600'>${totalDebit}</h2>
             <span className='text-gray-400 text-sm'>Spend this Range</span> 
             <h3 className='mt-10'>Net Income Per Month</h3>
             <canvas id="incomeExpenseLineChart" className="w-full" height="300" width="400"></canvas>

@@ -11,7 +11,7 @@ const authController = {
   // login 
   login: async (req, res) => {
     try {
-      const { email, full_name, google_id } = req.body;
+      const { full_name, email, google_id } = req.body;
 
       // Insert the user into the 'users' table
       const { data, error: insertError } = await supabase
@@ -24,14 +24,14 @@ const authController = {
       }
 
       console.log('User data stored on the server:', data);
-      console.log('Google Login successful');
+      console.log('Login successful');
       return res.json({ message: 'Login successful', user: data[0] });
     } catch (error) {
       console.error('Error during login:', error.message);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
   },
-
+  
   logout: async (req, res) => {
     // Logout user
     try {
