@@ -1,11 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDarkMode } from '../contexts/DarkModeContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from './Button';
 import Footer from './Footer';
 
 const Hero = () => {
   const { isDarkMode } = useDarkMode();
+  const history = useNavigate();
+
+  const navigate = useNavigate()
+
+  // useEffect(() => {
+
+  //   //implement function to check if user is authenticated
+
+  //   const isAuthenticated = isAuthenticated// auth check here
+
+  //   if (isAuthenticated){
+  //     //Redirect to profile page
+  //     navigate('/profile');
+  //   } else {
+  //     navigate('/login')
+  //   }
+  // }, [history])
 
   return (
     <div className={`h-screen text-5xl flex flex-col items-center justify-start ${isDarkMode ? 'bg-dark text-dark' : 'bg-light text-light'}`}>

@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import Header from './Header';
 import { useDarkMode } from '../contexts/DarkModeContext';
-import axios from 'axios';
+
+import { Link, Navigate } from 'react-router-dom';
+import Button from './Button';
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 const supabaseKey = process.env.REACT_APP_SUPABASE_API_KEY;
@@ -12,48 +14,69 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
 
 const Login = () => {
   const { isDarkMode } = useDarkMode();
-  const [email, setEmail] = useState('');
-  const [fullName, setFullName] = useState('');
-  const [googleId, setGoogleId] = useState('');
+  const [session, setSession] = useState(null);
 
-  const loginWithGoogle = async (session, user) => {
-    try {
-      console.log('before loginWithGoogle function in Login component')
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
 
-      const response = await axios.post('http://localhost:5001/auth/login')
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
 
-      console.log('loginWithGoogle response: ', response);
-      console.log(email, fullName, googleId)
-      setEmail(response.data.email);
-      setFullName(response.data.full_name);
-      setGoogleId(response.data.googleId);
-      console.log('after loginWithGoogle function')
+    return () => subscription.unsubscribe();
+  }, []);
 
-    } catch(error) {
-      console.error(error)
-    };
+
+  const loginWithGoogle = async () => {
+    const {data, error} = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        queryParams: {
+          access_type: 'offline',
+        }
+      }
+    });
+    if (!session) {
+      return (<Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />)
+    }
+    else {
+      return (Navigate('/profile'))
+    }
+
   };
 
   return (
     <div>
       <Header />
       <div className={`flex h-screen justify-between flex-col items-center py-20 ${isDarkMode ? 'bg-dark text-dark' : 'bg-light text-light'}`}>
-        <Auth
-          redirectTo="http://localhost:3000/profile"
-          supabaseClient={supabase}
-          appearance={{ theme: ThemeSupa }}
-          providers={['google']}
-          queryParams={{
-            access_type: 'offline',
-            prompt: 'consent',
-            hd: 'domain.com',
-          }}
-          onSuccess={loginWithGoogle}
-        />
+        {session ? (
+          <div className='h-5/6 w-full flex items-center justify-center flex-col'>
+            <p>Logged in!</p>
+            <Link className='w-full text-center' to='/profile'>
+              <Button>Click Here to Continue!</Button>
+            </Link>
+          </div>
+        ) : (
+          <Auth
+            redirectTo="http://localhost:3000/profile"
+            supabaseClient={supabase}
+            appearance={{ theme: ThemeSupa }}
+            providers={['google']}
+            queryParams={{
+              access_type: 'offline',
+              prompt: 'consent',
+              hd: 'domain.com',
+            }}
+            onSuccess={loginWithGoogle}
+          />
+        )}
       </div>
     </div>
   );
 };
-
 
 export default Login;
