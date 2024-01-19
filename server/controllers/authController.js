@@ -6,7 +6,7 @@ const authController = {
 
   //createClient
   createClient: async (context) => {
-    return createServerClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY, {
+    return createServerClient(process.env.SUPABASE_URL, process.env.SUPABASE_API_KEY, {
       cookies: {
         get: (key) => {
           const cookies = context.req.cookies;
@@ -29,44 +29,29 @@ const authController = {
     });
   },
 
-  // login 
+  //login 
   login: async (req, res) => {
     try {
-      const { full_name, email, google_id } = req.body;
-
-      // Insert the user into the 'users' table
-      const { data, error: insertError } = await supabase
-        .from('users')
-        .insert([{ full_name, email, google_id }], { onConflict: ['email'], returning: ['*'] });
-
-      if (insertError) {
-        console.error('Error storing user data in Supabase:', insertError.message);
-        return res.status(500).json({ error: 'Internal Server Error' });
-      }
-
-      console.log('User data stored on the server:', data);
       console.log('Login successful');
-      return res.json({ message: 'Login successful', user: data[0] });
+      return res.json({ message: 'Login successful', user: req.user });
     } catch (error) {
       console.error('Error during login:', error.message);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
   },
-  
+
+  // logout
   logout: async (req, res) => {
-    // Logout user
     try {
       const { error } = await supabase.auth.signOut();
-
       if (error) throw error;
-
       res.json({ message: 'Logout successful' });
     } catch (error) {
       console.error('Error:', error.message);
       res.status(500).json({ error: 'Internal Server Error' });
     }
   }
-
+  
 };
 
 module.exports = authController;

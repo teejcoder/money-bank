@@ -38,27 +38,27 @@ const apiController = {
       access_token = response.data.access_token;
 
       // Step 2: Check if the user has a basiq_user_id in Supabase DB
-      // console.log('Checking Supabase for basiq_user_id');
-      // const { data, error: supabaseError } = await supabase
-      // .from('users')
-      // .select('basiq_user_id');
+      console.log('Checking Supabase for basiq_user_id');
+      const { data, error: supabaseError } = await supabase
+      .from('users')
+      .select('basiq_user_id');
 
-      // if (supabaseError) {
-      //   if (supabaseError.code === 'PGRST116') {
-      //     console.log('No basiq_user_id found in Supabase');
-      //   } else {
-      //     console.error('Error checking Supabase:', supabaseError);
-      //   }
-      // }
+      if (supabaseError) {
+        if (supabaseError.code === 'PGRST116') {
+          console.log('No basiq_user_id found in Supabase');
+        } else {
+          console.error('Error checking Supabase:', supabaseError);
+        }
+      }
 
       // Step 3: If basiq_user_id exists, call getBasiqUser; otherwise, call createBasiqUser
-      // if (basiq_user_id) {
-      //   console.log('Basiq user found in Supabase:', basiq_user_id);
-        // await apiController.getBasiqUser(access_token, basiq_user_id, req, res);
-      // } else {
-      //   console.log('Basiq user not found in Supabase. Creating...');
-      //   await apiController.createBasiqUser(access_token);
-      // }
+      if (basiq_user_id) {
+        console.log('Basiq user found in Supabase:', basiq_user_id);
+        await apiController.getBasiqUser(access_token, basiq_user_id, req, res);
+      } else {
+        console.log('Basiq user not found in Supabase. Creating...');
+        await apiController.createBasiqUser(access_token);
+      }
         await apiController.getAccount(access_token, basiq_user_id);
         await apiController.getTransactions(access_token, basiq_user_id);
         res.status(200).send(transactions)
