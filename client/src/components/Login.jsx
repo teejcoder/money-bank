@@ -32,21 +32,20 @@ const Login = () => {
 
 
   const loginWithGoogle = async () => {
-    const {data, error} = await supabase.auth.signInWithOAuth({
-      provider: 'google',
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google,', 
       options: {
         queryParams: {
           access_type: 'offline',
-        }
-      }
+        },
+      },
     });
-    if (!session) {
-      return (<Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />)
+    if (!error && data) {
+      // Successfully logged in, redirect to '/profile'
+      return <Navigate to="/profile" />;
     }
-    else {
-      return (Navigate('/profile'))
-    }
-
+    // If there was an error or no data, show the Auth component
+    return <Auth supabaseClient={supabase} providers={['google']} appearance={{ theme: ThemeSupa }} />;
   };
 
   return (

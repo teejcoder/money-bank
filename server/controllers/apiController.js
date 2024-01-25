@@ -30,11 +30,7 @@ const apiController = {
         },
         data: encodedParams,
       };
-
-      console.log('Before auth request');
       const response = await axios(options);
-      console.log(response.data);
-      console.log('After auth request');
       access_token = response.data.access_token;
 
       // Step 2: Check if the user has a basiq_user_id in Supabase DB
@@ -53,10 +49,9 @@ const apiController = {
 
       // Step 3: If basiq_user_id exists, call getBasiqUser; otherwise, call createBasiqUser
       if (basiq_user_id) {
-        console.log('Basiq user found in Supabase:', basiq_user_id);
         await apiController.getBasiqUser(access_token, basiq_user_id, req, res);
       } else {
-        console.log('Basiq user not found in Supabase. Creating...');
+        console.log('Basiq user not found. Creating...');
         await apiController.createBasiqUser(access_token);
       }
         await apiController.getAccount(access_token, basiq_user_id);
@@ -79,7 +74,6 @@ const apiController = {
         }
       };
       const response = await axios.request(options)
-      console.log('basiq user consents:', response.data)
       res.status(200).send('getConsents successful')
     } catch (error) {
       console.error('getConsents error', error)
@@ -97,7 +91,6 @@ const apiController = {
 
     const response = await axios.request(options);
     account = response.data
-    console.log('getAccount function:', response.data);
     } catch (error) {
       console.error('getAccount error:', error);
     }
@@ -117,7 +110,6 @@ const apiController = {
       };
       const response = await axios.request(options);
       transactions = response.data
-      console.log('Basiq user transactions:', response.data);
       } catch (error) {
       console.error('Error fetching transactions:', error);
     }
@@ -138,7 +130,6 @@ const apiController = {
     try {
       const response = await axios.request(options);
       const authLinkData = response.data;
-      console.log(authLinkData);
     } catch (error) {
       console.error(error);
     }
@@ -156,7 +147,6 @@ const apiController = {
         }
       };
       const response = await axios.request(options);
-      console.log('Basiq user data:', response.data);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -176,24 +166,21 @@ const apiController = {
         },
         data: { email: 'gavin@hooli.com', firstName: 'Gavin', lastName: 'Belson' }
       };
-      console.log('Before createBasiqUser request');
       const response = await axios(options);
-      console.log(response.data);
 
       const new_basiq_user_id = response.data.id;
-      console.log('Basiq user ID:', new_basiq_user_id);
 
       // Store basiq_user_id in Supabase
-      // const { data, error } = await supabase
-      //   .from('users')
-      //   .insert({basiq_user_id: new_basiq_user_id})
-      //   .select()
-      // if (error) {
-      //   console.error('Error storing basiq_user_id in Supabase:', error);
-      // } if (data){
-      //   console.log(data)
-      //   console.log('Successfully stored basiq_user_id in Supabase');
-      // }
+      const { data, error } = await supabase
+        .from('users')
+        .insert({basiq_user_id: new_basiq_user_id})
+        .select()
+      if (error) {
+        console.error('Error storing basiq_user_id in Supabase:', error);
+      } if (data){
+        console.log(data)
+        console.log('Successfully stored basiq_user_id in Supabase');
+      }
       console.log('After createBasiqUser request');
     } catch (error) {
       console.error('Error:', error);

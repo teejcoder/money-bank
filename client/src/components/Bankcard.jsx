@@ -36,14 +36,11 @@ const Bankcard = () => {
   const getTransactions = async () => {
     try {
       setShowSpinner(true);
-      console.log('Before getTransactions');
 
       await new Promise(resolve => setTimeout(resolve, 1000));
 
       const response = await axios.post('http://localhost:5001/api/executeFlow');
       setTransactions(response.data.data);
-      console.log(response.data.data);
-      console.log('after getTransactions');
     } catch (error) {
       console.error('Error fetching transactions:', error);
     } finally {
@@ -72,9 +69,6 @@ const Bankcard = () => {
     let withdrawTotal = withdrawals.reduce((acc,c) => acc + c, 0);
     let depositTotal = deposits.reduce((acc,c) => acc + c, 0);
 
-    console.log('Withdrawals:', withdrawTotal);
-    console.log('Deposits:', depositTotal);
-  
     const data = {
       labels: ['Outgoing', 'Incoming'],
       datasets: [
