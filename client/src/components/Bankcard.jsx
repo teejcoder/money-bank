@@ -311,6 +311,9 @@ const Bankcard = () => {
       ],
     }
     const options = {
+      tooltips: {
+        position: 'nearest', // or 'nearest', 'average', etc.
+      },
       responsive: true,
       maintainAspectRatio: false,
       legend: {
