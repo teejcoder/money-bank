@@ -6,16 +6,11 @@ import Footer from './Footer';
 
 const Hero = () => {
   const { isDarkMode } = useDarkMode();
-  const history = useNavigate();
-
-  const navigate = useNavigate()
 
   // useEffect(() => {
-
   //   //implement function to check if user is authenticated
 
   //   const isAuthenticated = isAuthenticated// auth check here
-
   //   if (isAuthenticated){
   //     //Redirect to profile page
   //     navigate('/profile');

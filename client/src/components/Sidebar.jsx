@@ -29,7 +29,7 @@ const Sidebar = () => {
 
       {/* User settings icon */}
       <button 
-        className={`w-full p-4 focus:outline-none ${isDarkMode ? 'hover:bg-btnLight' : 'hover:bg-btnDark'}`}
+        className={'w-full p-4 focus:outline-none hover:bg-btnLight'}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +44,7 @@ const Sidebar = () => {
 
       {/* Transactions Icon */}
       <button 
-        className={`w-full p-4 focus:outline-none ${isDarkMode ? 'hover:bg-btnLight' : 'hover:bg-btnDark'}`}
+        className={'w-full p-4 focus:outline-none hover:bg-btnLight'}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -60,7 +60,7 @@ const Sidebar = () => {
       {/* Logout Icon */}
       <button
         onClick={handleLogout}
-        className={`w-full p-4 focus:outline-none ${isDarkMode ? 'hover:bg-btnLight' : 'hover:bg-btnDark'}`}
+        className={'w-full p-4 focus:outline-none hover:bg-btnLight'}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
