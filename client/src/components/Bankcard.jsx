@@ -11,6 +11,7 @@ const Bankcard = () => {
   const [transactions, setTransactions] = useState([]);
   const [totalBalance, setTotalBalance] = useState(0);
   const [totalDebit, setTotalDebit] = useState(0);
+  const [account, setAccount] = useState([]);
 
   useEffect(() => {
     if (transactions.length > 0) {
@@ -41,6 +42,7 @@ const Bankcard = () => {
 
       const response = await axios.post('http://localhost:5001/api/executeFlow');
       setTransactions(response.data.data);
+      console.log(response.data.account)
     } catch (error) {
       console.error('Error fetching transactions:', error);
     } finally {
@@ -277,10 +279,10 @@ const Bankcard = () => {
     const topExpenses = transactions
       .filter(transaction => parseFloat(transaction.amount) < 0) // Consider only debit transactions (expenses)
       .sort((a, b) => parseFloat(a.amount) - parseFloat(b.amount)) // Sort by amount in ascending order
-      .slice(0, 5); // Take the top 5 expenses
+      .slice(0, 3); // Take the top 5 expenses
 
     // Extract labels and data for the chart
-    const expenseLabels = topExpenses.map(expense => expense.description);
+    const expenseLabels = topExpenses.find(expense => expense.subClass.title);
     const expenseData = topExpenses.map(expense => expense.amount);
 
     // Create the doughnut chart
@@ -367,7 +369,7 @@ const Bankcard = () => {
           </Button>
         </>
       ) : (
-        <div className='text-center'><p><i>This is test data for example purposes only.</i></p>
+        <div className='text-center pt-10'><p><i>This is test data for example purposes only.</i></p>
         <div className='xl:flex items-center justify-center flex-col md:flex-row mt-10 mb-10'>
           {/* BAR CHART & TOTAL BALANCE*/}
           <div className='text-center p-5 chart-container'> 

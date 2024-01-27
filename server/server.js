@@ -18,14 +18,14 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(__dirname, '../client/build')));
+app.use(express.static(path.join(__dirname, 'client', 'build')));
 
-// app.use('/', mainRoutes);
+// Define API and authentication routes
 app.use('/api', apiRoutes);
 app.use('/auth', authRoutes);
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(process.cwd(), '..', 'client', 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 
 // Start the server

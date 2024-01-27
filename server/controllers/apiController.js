@@ -101,7 +101,7 @@ const apiController = {
       const options = {
         method: 'GET',
         url: `https://au-api.basiq.io/users/${basiq_user_id}/transactions?filter=account.id.eq('6cbd3f54-3623-4a7e-a73a-8cbb351b3487')`,
-        params: {limit: '500'},
+        params: {limit: '100'},
         headers: {
           accept: 'application/json',
           'content-type': 'application/json',
