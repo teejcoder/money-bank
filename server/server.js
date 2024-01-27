@@ -25,10 +25,10 @@ app.use('/api', apiRoutes);
 app.use('/auth', authRoutes);
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+  res.sendFile(path.join(__dirname, '../client/build'));
 });
 
 // Start the server
-app.listen(process.env.PORT, () => {
+app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
