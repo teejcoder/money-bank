@@ -24,20 +24,11 @@ const Sidebar = () => {
 
   return (
     <aside className={`fixed top-0 mt-20 h-52 w-full xl:h-full xl:w-24 flex flex-col justify-between border-b sm:border-r z-50 ${isDarkMode ? 'bg-dark' : 'bg-light'}`}>
-<<<<<<< HEAD
-      {/* Icons at the top */}
-      <div className="mt-5">
-
-      {/* User settings icon */}
-      <button 
-        className={`w-full p-4 focus:outline-none ${isDarkMode ? 'hover:bg-btnLight' : 'hover:bg-btnDark'}`}
-=======
 
       <div className="mt-5">
       {/* User settings icon */}
       <button 
         className={'w-full p-4 focus:outline-none hover:bg-btnLight'}
->>>>>>> master
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -52,11 +43,7 @@ const Sidebar = () => {
 
       {/* Transactions Icon */}
       <button 
-<<<<<<< HEAD
-        className={`w-full p-4 focus:outline-none ${isDarkMode ? 'hover:bg-btnLight' : 'hover:bg-btnDark'}`}
-=======
         className={'w-full p-4 focus:outline-none hover:bg-btnLight'}
->>>>>>> master
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -72,11 +59,7 @@ const Sidebar = () => {
       {/* Logout Icon */}
       <button
         onClick={handleLogout}
-<<<<<<< HEAD
-        className={`w-full p-4 focus:outline-none ${isDarkMode ? 'hover:bg-btnLight' : 'hover:bg-btnDark'}`}
-=======
         className={'w-full p-4 focus:outline-none hover:bg-btnLight'}
->>>>>>> master
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

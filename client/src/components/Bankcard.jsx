@@ -311,12 +311,9 @@ const Bankcard = () => {
       ],
     }
     const options = {
-<<<<<<< HEAD
-=======
       tooltips: {
         position: 'nearest', // or 'nearest', 'average', etc.
       },
->>>>>>> master
       responsive: true,
       maintainAspectRatio: false,
       legend: {
@@ -370,13 +367,8 @@ const Bankcard = () => {
           </Button>
         </>
       ) : (
-<<<<<<< HEAD
-        <div className='xl:flex items-center justify-center flex-col md:flex-row mt-10 mb-10'>
-          
-=======
         <div className='text-center'><p><i>This is test data for viewing purposes.</i></p>
         <div className='xl:flex items-center justify-center flex-col md:flex-row mt-10 mb-10'>
->>>>>>> master
           {/* BAR CHART & TOTAL BALANCE*/}
           <div className='text-center p-5 chart-container'> 
             <h2 className='text-5xl text-green-600'>${totalBalance}</h2>
@@ -385,13 +377,8 @@ const Bankcard = () => {
             <canvas id="transactionBarChart" width="400" height="300"></canvas>
           </div>
 
-<<<<<<< HEAD
-          {/* PIE CHART */}
-          <div className='flex justify-center items-center flex-col'>
-=======
           <div className='flex justify-center items-center flex-col'>
             {/* PIE CHART */}
->>>>>>> master
             <div className='text-center chart-container'> 
               <h3>Income v Expenses</h3>
               <canvas id="transactionPieChart" width="300" height="200"></canvas>
@@ -410,10 +397,7 @@ const Bankcard = () => {
             <canvas id="incomeExpenseLineChart" className="w-full" height="300" width="400"></canvas>
           </div>
         </div>
-<<<<<<< HEAD
-=======
         </div>
->>>>>>> master
       )}
     </div>
   );
