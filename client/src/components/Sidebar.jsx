@@ -24,9 +24,8 @@ const Sidebar = () => {
 
   return (
     <aside className={`fixed top-0 mt-20 h-52 w-full xl:h-full xl:w-24 flex flex-col justify-between border-b sm:border-r z-50 ${isDarkMode ? 'bg-dark' : 'bg-light'}`}>
-      {/* Icons at the top */}
-      <div className="mt-5">
 
+      <div className="mt-5">
       {/* User settings icon */}
       <button 
         className={'w-full p-4 focus:outline-none hover:bg-btnLight'}

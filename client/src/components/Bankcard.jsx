@@ -367,6 +367,7 @@ const Bankcard = () => {
           </Button>
         </>
       ) : (
+        <div className='text-center'><p><i>This is test data for viewing purposes.</i></p>
         <div className='xl:flex items-center justify-center flex-col md:flex-row mt-10 mb-10'>
           {/* BAR CHART & TOTAL BALANCE*/}
           <div className='text-center p-5 chart-container'> 
@@ -395,6 +396,7 @@ const Bankcard = () => {
             <h3 className='mt-10'>Net Income Per Month</h3>
             <canvas id="incomeExpenseLineChart" className="w-full" height="300" width="400"></canvas>
           </div>
+        </div>
         </div>
       )}
     </div>
