@@ -70,7 +70,11 @@ const Login = () => {
               prompt: 'consent',
               hd: 'domain.com',
             }}
+<<<<<<< HEAD
             onSuccess={loginWithGoogle}
+=======
+            onClick={loginWithGoogle}
+>>>>>>> master
           />
         )}
       </div>
