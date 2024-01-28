@@ -1,12 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const path = require('path'); 
 const apiRoutes = require('./routes/apiRoutes');
 const authRoutes = require('./routes/authRoutes');
 require('dotenv').config();
 
 const port = process.env.PORT || 5001;
+const path = require('path'); 
 
 app.use((req, res, next) => {
   res.header('Cache-Control', 'no-store');
