@@ -35,9 +35,16 @@ const Header = ({ toggleSidebar }) => {
 
   return (
     <div className={`h-20 w-full p-10 top-0 sticky border-b flex justify-between items-center ${isDarkMode ? 'bg-dark text-dark' : 'bg-light text-light'}`}>
-      <button onClick={toggleSidebar} className="text-4xl md:text-5xl">
-        ☰ {/* Hamburger menu icon */}
-      </button>
+      {isDarkMode ? 
+      (
+        <button onClick={toggleSidebar} className="text-4xl md:text-5xl">
+        <img className='h-24' src="./assets/logo-dark.png" alt="Money Bank light mode logo" />
+        </button>
+      ) : (
+        <button onClick={toggleSidebar} className="text-4xl md:text-5xl">
+        <img className='h-24' src="./assets/logo-light.png" alt="Money Bank dark mode logo" />
+        </button>
+      )}
 
       {loading ? (
         <p className='pr-4'>Loading...</p>
