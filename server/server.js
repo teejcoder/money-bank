@@ -13,14 +13,12 @@ app.use((req, res, next) => {
   next();
 });
 
-// Use CORS middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, 'build')));
 
-// Define API and authentication routes
 app.use('/api', apiRoutes);
 app.use('/auth', authRoutes);
 
@@ -28,7 +26,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-// Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
