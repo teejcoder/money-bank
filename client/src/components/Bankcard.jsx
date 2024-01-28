@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Chart from 'chart.js/auto';
 import BarChart from './charts/BarChart';
 import PieChart from './charts/PieChart';
 import { useDarkMode } from '../contexts/DarkModeContext';
