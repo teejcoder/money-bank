@@ -13,6 +13,12 @@ app.use((req, res, next) => {
   next();
 });
 
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' ? 'https://moneybank.cyclic.app/' : '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+};
+
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
