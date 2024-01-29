@@ -14,7 +14,7 @@ app.use((req, res, next) => {
 });
 
 const corsOptions = {
-  origin: 'https//localhost:5001',
+  origin: 'http://localhost:5001',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
 };
