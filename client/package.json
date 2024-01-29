@@ -2,7 +2,7 @@
   "name": "money-bank",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://kind-gold-chinchilla-wear.cyclic.app",
+  "proxy": "https://moneybank.cyclic.app",
   "dependencies": {
     "@react-oauth/google": "^0.11.1",
     "@supabase/auth-ui-react": "^0.4.7",
