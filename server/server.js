@@ -14,7 +14,7 @@ app.use((req, res, next) => {
 });
 
 const corsOptions = {
-  origin: 'https://moneybank.cyclic.app',
+  origin: 'https//localhost:5001',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
 };
