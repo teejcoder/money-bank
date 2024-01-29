@@ -30,7 +30,6 @@ app.use('/auth', authRoutes);
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-  console.log('Index path:', indexPath);
 });
 
 app.listen(port, () => {
