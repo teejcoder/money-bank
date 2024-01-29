@@ -38,7 +38,7 @@ const Bankcard = () => {
 
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      const response = await axios.post('https://moneybank.cyclic.app/api/executeFlow');
+      const response = await axios.post('/api/executeFlow');
       setTransactions(response.data.data);
       console.log(response.data.data)
     } catch (error) {
