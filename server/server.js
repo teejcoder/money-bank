@@ -8,12 +8,6 @@ require('dotenv').config();
 const port = process.env.PORT || 5001;
 const path = require('path'); 
 
-const corsOptions = {
-  origin: 'http://localhost:3000',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-};
-
 app.use((req, res, next) => {
   res.header('Cache-Control', 'no-store');
   next();
@@ -23,14 +17,14 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static(path.join('../client/build')));
-
-app.get('/', (req, res) => {
-  res.sendFile(path.resolve('./client/build/index.html'));
-});
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.use('/api', apiRoutes);
 app.use('/auth', authRoutes);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
