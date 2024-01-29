@@ -38,7 +38,7 @@ const Bankcard = () => {
 
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      const response = await axios.post('https://drab-blue-vulture-garb.cyclic.app/api/executeFlow');
+      const response = await axios.post('/api/executeFlow');
       setTransactions(response.data.data);
     } catch (error) {
       console.error('Error fetching transactions:', error);
