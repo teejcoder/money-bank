@@ -5,7 +5,7 @@ const apiRoutes = require('./routes/apiRoutes');
 const authRoutes = require('./routes/authRoutes');
 require('dotenv').config();
 
-const port = 5001;
+const port = process.env.PORT || 5001;
 const path = require('path'); 
 
 app.use((req, res, next) => {
