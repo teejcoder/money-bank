@@ -5,20 +5,18 @@ const apiRoutes = require('./routes/apiRoutes');
 const authRoutes = require('./routes/authRoutes');
 require('dotenv').config();
 
-const port = 5001;
+const port = process.env.PORT || 5001;
 const path = require('path'); 
 
 app.use((req, res, next) => {
   res.header('Cache-Control', 'no-store');
   next();
 });
-
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' ? 'https://moneybank.cyclic.app/' : '*',
+  origin: process.env.NODE_ENV === 'production' ? 'https://kind-gold-chinchilla-wear.cyclic.app' : '*',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
 };
-
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
