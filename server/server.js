@@ -14,7 +14,7 @@ app.use((req, res, next) => {
 });
 
 const corsOptions = {
-  origin: 'https://kind-gold-chinchilla-wear.cyclic.app',
+  origin: 'https://moneybank.cyclic.app',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
 };
