@@ -23,7 +23,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(__dirname, '../client/build')));
+app.use(express.static(path.join(__dirname, '/client/build')));
 
 app.use('/api', apiRoutes);
 app.use('/auth', authRoutes);
