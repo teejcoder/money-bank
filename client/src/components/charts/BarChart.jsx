@@ -3,14 +3,18 @@ import Chart from 'chart.js/auto';
 
 const BarChart = ({ data, isDarkMode }) => {
   useEffect(() => {
+    // Get the canvas element
     const barChartCanvas = document.getElementById('transactionBarChart');
 
+    // Destroy existing chart instance to prevent duplicates
     if (window.barChart) {
-        window.barChart.destroy();
-      }
+      window.barChart.destroy();
+    }
 
     if (barChartCanvas) {
+      // Get the 2D rendering context for the canvas
       const ctx = barChartCanvas.getContext('2d');
+
       // Process data to separate income and expenses by month
       const monthlyData = {};
 
@@ -28,10 +32,12 @@ const BarChart = ({ data, isDarkMode }) => {
         }
       });
 
+      // Extract months and data for the chart
       const months = Object.keys(monthlyData);
       const incomeData = months.map((key) => monthlyData[key].income);
       const expensesData = months.map((key) => monthlyData[key].expenses);
 
+      // Create the bar chart data
       const chartData = {
         labels: months,
         datasets: [
@@ -54,6 +60,7 @@ const BarChart = ({ data, isDarkMode }) => {
         ],
       };
 
+      // Configure chart options
       const options = {
         scales: {
           x: {
@@ -91,6 +98,7 @@ const BarChart = ({ data, isDarkMode }) => {
         },
       };
 
+      // Create a new bar chart instance
       window.barChart = new Chart(ctx, {
         type: 'bar',
         data: chartData,
@@ -101,6 +109,7 @@ const BarChart = ({ data, isDarkMode }) => {
     }
   }, [data, isDarkMode]);
 
+  // Render the canvas element for the chart
   return <canvas id="transactionBarChart" width="400" height="300"></canvas>;
 };
 

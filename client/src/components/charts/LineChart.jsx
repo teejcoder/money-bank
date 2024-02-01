@@ -2,17 +2,23 @@ import React, { useEffect } from 'react';
 import Chart from 'chart.js/auto';
 
 const LineChart = ({ data, isDarkMode }) => {
-    useEffect(() => {
+  useEffect(() => {
+    // Get the canvas element
     const lineChartCanvas = document.getElementById('incomeExpenseLineChart');
+
     // Check if the canvas element exists
     if (!lineChartCanvas) {
+      // Log an error if the canvas element is not found
       console.error('lineChartCanvas element not found');
       return;
     }
+
+    // Destroy existing chart instance to prevent duplicates
     if (window.lineChart) {
-        window.lineChart.destroy();
-      }
-      
+      window.lineChart.destroy();
+    }
+
+    // Get the 2D rendering context for the canvas
     const ctx = lineChartCanvas.getContext('2d');
 
     // Process transactions to track income minus expenses by month
@@ -32,9 +38,11 @@ const LineChart = ({ data, isDarkMode }) => {
       }
     });
 
+    // Extract months and data for the chart
     const months = Object.keys(monthlyData);
     const netIncomeData = months.map((key) => monthlyData[key]);
 
+    // Create the line chart data
     const chartData = {
       labels: months,
       datasets: [
@@ -51,6 +59,7 @@ const LineChart = ({ data, isDarkMode }) => {
       ],
     };
 
+    // Configure chart options
     const options = {
       scales: {
         x: {
@@ -87,13 +96,15 @@ const LineChart = ({ data, isDarkMode }) => {
       },
     };
 
+    // Create a new line chart instance
     window.lineChart = new Chart(ctx, {
       type: 'line',
       data: chartData,
       options: options,
     });
-}, [data, isDarkMode]);
+  }, [data, isDarkMode]);
 
+  // Render the canvas element for the chart
   return <canvas id="incomeExpenseLineChart" width="400" height="300"></canvas>;
 };
 

@@ -1,4 +1,3 @@
-// AuthProvider.js
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from './config/supabaseClient';
 

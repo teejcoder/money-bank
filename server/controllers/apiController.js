@@ -12,6 +12,7 @@ let access_token;
 const basiq_user_id = "c31ec381-8294-465c-ae21-67f9df0362f1"
 
 const apiController = {
+  // Function to execute the entire flow
   executeFlow: async (req, res) => {
     try {
       // Step 1: Generate Auth Token
@@ -63,6 +64,7 @@ const apiController = {
       };
   },
 
+  // Function to get consents
   getConsents: async (access_token, basiq_user_id, req, res) => {
     try{
       const options = {
@@ -81,6 +83,7 @@ const apiController = {
     }
   },
 
+  // Function to get account
   getAccount: async (access_token, basiq_user_id, req, res) => {
   try {
     const options = {
@@ -96,6 +99,7 @@ const apiController = {
     }
   },
 
+  //function to get transactions
   getTransactions: async (access_token, basiq_user_id, req, res) => {
     try {
       const options = {
@@ -115,6 +119,7 @@ const apiController = {
     }
   },
 
+  //function to post auth link
   postAuthLink: async (access_token, basiq_user_id, req, res) => {
     const options = {
       method: 'POST',
@@ -135,6 +140,7 @@ const apiController = {
     }
   },
 
+  //function to get basiq user info from Basiq API
   getBasiqUser: async (access_token, basiq_user_id, req, res) => {
     try {
       console.log('Getting Basiq user');
@@ -152,6 +158,7 @@ const apiController = {
     }
   },
 
+  //function to create Basiq user with hardcoded values
   createBasiqUser: async (access_token, req, res) => {
     try {
       console.log('Starting createBasiqUser function');

@@ -16,6 +16,7 @@ const Bankcard = () => {
   const [totalDebit, setTotalDebit] = useState(0);
 
   useEffect(() => {
+    // When transactions change, update charts and totals
     if (transactions.length > 0) {
       destroyCharts();
       calculateTotalBalance();
@@ -24,6 +25,7 @@ const Bankcard = () => {
   }, [transactions]);
 
   const destroyCharts = () => {
+    // Destroy existing chart instances to prevent duplicates
     ['pieChart', 'barChart', 'lineChart', 'doughnutChart'].forEach(chartName => {
       if (window[chartName]) {
         window[chartName].destroy();
@@ -31,13 +33,15 @@ const Bankcard = () => {
     });
   };
 
-  //Get transactions - executeFlow function
+  // Fetch transactions from the server
   const getTransactions = async () => {
     try {
       setShowSpinner(true);
 
+      // Simulate delay for user experience
       await new Promise(resolve => setTimeout(resolve, 1000));
 
+      // Fetch transactions using axios
       const response = await axios.post('/api/executeFlow');
       setTransactions(response.data.data);
     } catch (error) {
@@ -47,24 +51,23 @@ const Bankcard = () => {
     }
   };
 
-  //Total balance credit minus debit
+  // Calculate the total balance (credit minus debit)
   const calculateTotalBalance = () => {
     const balance = transactions.reduce((acc, transaction) => {
       const amount = parseFloat(transaction.amount);
       return transaction.direction === 'debit' ? acc - amount : acc + amount;
     }, 0);
-    setTotalBalance(parseFloat(balance.toFixed(2)))
+    setTotalBalance(parseFloat(balance.toFixed(2)));
   }
 
+  // Calculate the total debit amount
   const calculateTotalDebits = () => {
-    const debits = transactions.filter((transaction) => {
-      return transaction.direction === 'debit'
-    })
+    const debits = transactions.filter((transaction) => transaction.direction === 'debit');
     const totalDebits = debits.reduce((acc, transaction) => {
-    const amount = parseFloat(transaction.amount);
-    return acc + amount
-  }, 0);
-  setTotalDebit(parseFloat(totalDebits.toFixed(2)))
+      const amount = parseFloat(transaction.amount);
+      return acc + amount;
+    }, 0);
+    setTotalDebit(parseFloat(totalDebits.toFixed(2)));
   }
 
   return (
@@ -100,7 +103,7 @@ const Bankcard = () => {
               </div>
 
               {/* DOUGHNUT CHART */}
-              <div className='text-center chart-container'> 
+              <div className='text-center chart-container pb-2'> 
               <DoughnutChart data={transactions} isDarkMode={isDarkMode} />
               </div>
             </div>

@@ -3,19 +3,25 @@ import Chart from 'chart.js/auto';
 
 const DoughnutChart = ({ data, isDarkMode }) => {
   useEffect(() => {
-    const doughtnutChartCanvas = document.getElementById('expenseDoughnutChart');
+    // Get the canvas element
+    const doughnutChartCanvas = document.getElementById('expenseDoughnutChart');
+
     // Check if the canvas element exists
-    if (!doughtnutChartCanvas) {
-      console.error('doughtnutChartCanvas element not found');
+    if (!doughnutChartCanvas) {
+      // Log an error if the canvas element is not found
+      console.error('doughnutChartCanvas element not found');
       return;
     }
+
+    // Destroy existing chart instance to prevent duplicates
     if (window.doughnutChart) {
-        window.doughnutChart.destroy();
+      window.doughnutChart.destroy();
     }
 
-    const ctx = doughtnutChartCanvas.getContext('2d');
+    // Get the 2D rendering context for the canvas
+    const ctx = doughnutChartCanvas.getContext('2d');
 
-    //get top expenses
+    // Get top expenses
     const topExpenses = data
       .filter(transaction => parseFloat(transaction.amount) < 0) // Consider only debit transactions (expenses)
       .sort((a, b) => parseFloat(a.amount) - parseFloat(b.amount)) // Sort by amount in ascending order
@@ -25,7 +31,7 @@ const DoughnutChart = ({ data, isDarkMode }) => {
     const expenseLabels = topExpenses.map(expense => expense.subClass.title);
     const expenseData = topExpenses.map(expense => expense.amount);
 
-    // Create the doughnut chart
+    // Create the doughnut chart data
     const chartData = {
       labels: expenseLabels,
       datasets: [
@@ -45,34 +51,40 @@ const DoughnutChart = ({ data, isDarkMode }) => {
             'rgba(75, 192, 192, 0.7)',
             'rgba(153, 102, 255, 0.7)',
           ],
-          hoverOffset: 4
+          hoverOffset: 4,
         },
       ],
-    }
+    };
+
+    // Configure chart options
     const options = {
       tooltips: {
         position: 'nearest', // or 'nearest', 'average', etc.
       },
       responsive: true,
       maintainAspectRatio: false,
-      legend: {
-        display: true,
-        position: 'bottom',
-      },
-      title: {
-        display: true,
-        text: 'Top 5 Expenses',
-        color: isDarkMode ? '#BABABA' : '#6C6B6B',
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom',
+        },
+        title: {
+          display: true,
+          text: 'Top 5 Expenses',
+          color: isDarkMode ? '#BABABA' : '#6C6B6B',
+        },
       },
     };
 
+    // Create a new doughnut chart instance
     window.doughnutChart = new Chart(ctx, {
       type: 'doughnut',
       data: chartData,
       options: options,
-    })
+    });
   }, [data, isDarkMode]);
 
+  // Render the canvas element for the chart
   return <canvas id="expenseDoughnutChart" width="400" height="300"></canvas>;
 };
 
